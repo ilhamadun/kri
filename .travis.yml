@@ -1,0 +1,29 @@
+language: python
+
+python:
+  - '3.6'
+
+services: postgresql
+
+env:
+  global:
+    - DJANGO=1.10.5
+    - DJANGO_SETTINGS_MODULE="kri.settings.test"
+    - PYTHONPATH="/home/travis/build/ilhamadun/kri"
+    - DB_NAME="kri"
+    - DB_USER="postgres"
+    - DB_PASSWORD=""
+    - STATIC_ROOT="/tmp/static"
+    - MEDIA_ROOT="/tmp/media"
+
+install:
+  - pip install -r requirements.txt
+
+before_script:
+  - psql -c "CREATE DATABASE kri;" -U postgres
+
+script:
+  - python manage.py migrate
+  - python manage.py collectstatic --no-input
+  - python manage.py test
+  
