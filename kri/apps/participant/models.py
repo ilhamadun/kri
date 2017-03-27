@@ -9,6 +9,7 @@ import hashlib
 import random
 from django.db import models, IntegrityError
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from django.contrib.auth.models import User
 
 
 TEAM_DIVISION = (
@@ -22,6 +23,7 @@ TEAM_DIVISION = (
 class University(models.Model):
     name = models.CharField(max_length=50)
     abbreviation = models.CharField(max_length=10, null=True)
+    user = models.OneToOneField(User, models.CASCADE)
     krai = models.BooleanField(default=False)
     krsbi_beroda = models.BooleanField(default=False)
     krsti = models.BooleanField(default=False)

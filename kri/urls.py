@@ -17,4 +17,5 @@ from django.conf.urls import url, include
 
 urlpatterns = [
     url(r'^', include('kri.apps.kri.urls')),
+    url(r'^peserta/', include('kri.apps.participant.urls')),
 ]

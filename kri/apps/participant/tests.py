@@ -1,7 +1,10 @@
 """Test cases for participant application"""
 
 import datetime
+import random
+import string
 from django.core.exceptions import PermissionDenied
+from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.test import TestCase
 from . import models
@@ -12,9 +15,11 @@ class UniversityTestCase(TestCase):
     @staticmethod
     def mock_university():
         """Create a University instance for testing purpose"""
+        username = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(5)])
         return models.University.objects.create(
             name='Universitas Gadjah Mada',
             abbreviation='UGM',
+            user=User.objects.create_user(username, 'kri2017@ugm.ac.id', 'password'),
             krai=True,
             krsbi_beroda=False,
             krsti=True,
