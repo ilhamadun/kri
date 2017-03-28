@@ -12,14 +12,6 @@ from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.contrib.auth.models import User
 
 
-TEAM_DIVISION = (
-    (0, 'KRAI'),
-    (1, 'KRSBI Beroda'),
-    (2, 'KRSTI'),
-    (3, 'KRPAI')
-)
-
-
 class University(models.Model):
     name = models.CharField(max_length=50)
     abbreviation = models.CharField(max_length=10, null=True)
@@ -42,18 +34,9 @@ class University(models.Model):
             - AssertionError: division is not a member of TEAM_DIVISION
 
         """
-        assert division in range(0, 4), 'division is not a member of TEAM_DIVISION.'
+        assert division in ('krai', 'krsbi_beroda', 'krsti', 'krpai'), 'division is not a member of TEAM_DIVISION.'
 
-        if division == TEAM_DIVISION[0][0]:
-            return self.krai
-        elif division == TEAM_DIVISION[1][0]:
-            return self.krsbi_beroda
-        elif division == TEAM_DIVISION[2][0]:
-            return self.krsti
-        elif division == TEAM_DIVISION[3][0]:
-            return self.krpai
-        else:
-            return False
+        return getattr(self, division)
 
     def team(self, division):
         """Get the university's team for the division
@@ -95,7 +78,7 @@ class TeamManager(models.Manager):
         if university.has_access(division):
             if self.exists(university, division):
                 raise IntegrityError('{0} sudah memiliki tim {1}.'.format(
-                    university.name, TEAM_DIVISION[division][1]))
+                    university.name, Team.division_type_display(division)))
 
             team = self.model(**kwargs)
             team.save()
@@ -103,7 +86,7 @@ class TeamManager(models.Manager):
             return team
         else:
             raise PermissionDenied('{0} tidak mengikuti {1}.'.format(
-                university.name, TEAM_DIVISION[division][1]))
+                university.name, Team.division_type_display(division)))
 
     def exists(self, university, division):
         """Check if the university has a team for the division"""
@@ -140,12 +123,19 @@ def team_image_directory(instance, filename):
 
 
 class Team(models.Model):
-    MAX_CORE_MEMBER = [3, 3, 3, 2]
-    MAX_MECHANIC = [3, 1, 1, 1]
+    TEAM_DIVISION = (
+        ('krai', 'KRAI'),
+        ('krsbi_beroda', 'KRSBI Beroda'),
+        ('krsti', 'KRSTI'),
+        ('krpai', 'KRPAI')
+    )
+
+    MAX_CORE_MEMBER = {'krai': 3, 'krsbi_beroda': 3, 'krsti': 3, 'krpai': 2}
+    MAX_MECHANIC = {'krai': 3, 'krsbi_beroda': 1, 'krsti': 1, 'krpai': 1}
 
     name = models.CharField(max_length=100, null=True)
     university = models.ForeignKey(University, on_delete=models.CASCADE, related_name='teams')
-    division = models.SmallIntegerField(choices=TEAM_DIVISION)
+    division = models.CharField(max_length=12, choices=TEAM_DIVISION)
     arrival_time = models.DateTimeField(null=True)
     transport = models.CharField(max_length=100, null=True)
     photo = models.ImageField(upload_to=team_image_directory, null=True, blank=True)
@@ -177,6 +167,14 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name + ' - ' + self.university.name
+
+    @staticmethod
+    def division_type_display(key):
+        for d in Team.TEAM_DIVISION:
+            if d[0] == key:
+                return d[1]
+
+        return None
 
 
 def person_image_directory(instance, filename):

@@ -31,10 +31,10 @@ class UniversityTestCase(TestCase):
 
     def test_division_access(self):
         """Test the university's privileges on a division"""
-        self.assertTrue(self.university.has_access(0))
-        self.assertFalse(self.university.has_access(1))
-        self.assertTrue(self.university.has_access(2))
-        self.assertFalse(self.university.has_access(3))
+        self.assertTrue(self.university.has_access('krai'))
+        self.assertFalse(self.university.has_access('krsbi_beroda'))
+        self.assertTrue(self.university.has_access('krsti'))
+        self.assertFalse(self.university.has_access('krpai'))
 
 
 class TeamTestCase(TestCase):
@@ -56,7 +56,7 @@ class TeamTestCase(TestCase):
 
     def test_create_team(self):
         """Test a successful team creation"""
-        DIVISION = 0
+        DIVISION = 'krai'
 
         TeamTestCase.mock_team('KRPAI', DIVISION, self.university)
         team = models.Team.objects.get(name='KRPAI')
@@ -69,17 +69,17 @@ class TeamTestCase(TestCase):
     def test_create_team_premission_denied(self):
         """Test team creation on university with no privileges"""
         with self.assertRaises(PermissionDenied) as error:
-            TeamTestCase.mock_team('KRSBI Beroda', 1, self.university)
+            TeamTestCase.mock_team('KRSBI Beroda', 'krsbi_beroda', self.university)
 
         self.assertEqual(error.exception.args[0],
                          'Universitas Gadjah Mada tidak mengikuti KRSBI Beroda.')
 
     def test_create_duplicate_team(self):
         """Test tean creation when the university has another team on the same division"""
-        TeamTestCase.mock_team('KRSTI', 2, self.university)
+        TeamTestCase.mock_team('KRSTI', 'krsti', self.university)
 
         with self.assertRaises(IntegrityError) as error:
-            TeamTestCase.mock_team('KRSTI', 2, self.university)
+            TeamTestCase.mock_team('KRSTI', 'krsti', self.university)
 
         self.assertEqual(error.exception.args[0],
                          'Universitas Gadjah Mada sudah memiliki tim KRSTI.')
@@ -87,7 +87,7 @@ class TeamTestCase(TestCase):
     def test_create_team_invalid_division(self):
         """Test team creation with invalid division"""
         with self.assertRaises(AssertionError) as error:
-            TeamTestCase.mock_team('Team', 4, self.university)
+            TeamTestCase.mock_team('Team', 'krsbi', self.university)
 
         self.assertEqual(error.exception.args[0],
                          'division is not a member of TEAM_DIVISION.')
@@ -95,7 +95,7 @@ class TeamTestCase(TestCase):
     def test_team_max_member(self):
         """Test the Team maximum number of member"""
         university = UniversityTestCase.mock_university()
-        team = TeamTestCase.mock_team('KRPAI', 2, university)
+        team = TeamTestCase.mock_team('KRSTI', 'krsti', university)
 
         for i in range(team.max_core_member()):
             PersonTestCase.mock_person('core-{0}'.format(i), team, 'core_member')
@@ -133,7 +133,7 @@ class PersonTestCase(TestCase):
         self.university = UniversityTestCase.mock_university()
         self.university.krpai = True
         self.university.save()
-        self.team = TeamTestCase.mock_team('KRPAI', 3, self.university)
+        self.team = TeamTestCase.mock_team('KRPAI', 'krpai', self.university)
 
     def test_create_person(self):
         """Test person creation"""
