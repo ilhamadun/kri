@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -27,10 +28,19 @@ def division(request, *args, **kwargs):
             team.university = request.user.university
             team.division = kwargs['division']
             team.save()
-            messages.success(request, 'Informasi tim telah disimpan.')
-
+            status = 'success'
+            message = 'Informasi tim telah disimpan.'
         else:
-            messages.error(request, 'Ada kesalahan dalam formulir Anda.')
+            status = 'error'
+            message = 'Ada kesalahan dalam formulir Anda.'
+
+        if request.is_ajax():
+            return JsonResponse({
+                'status': status,
+                'message': message
+            })
+        else:
+            getattr(messages, status)(request, message)
 
     else:
         form_team = TeamForm(instance=instance)

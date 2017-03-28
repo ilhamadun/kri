@@ -13,9 +13,10 @@ authurls = [
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^krai/$', views.krai, name='krai'),
-    url(r'^krsbi-beroda/$', views.krsbi_beroda, name='krsbi-beroda'),
-    url(r'^krsti/$', views.krsti, name='krsti'),
-    url(r'^krpai/$', views.krpai, name='krpai'),
-    
+
+    url(r'^team/krai/$', views.krai, name='krai'),
+    url(r'^team/krsbi-beroda/$', views.krsbi_beroda, name='krsbi-beroda'),
+    url(r'^team/krsti/$', views.krsti, name='krsti'),
+    url(r'^team/krpai/$', views.krpai, name='krpai'),
+
 ] + authurls

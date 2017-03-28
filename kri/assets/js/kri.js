@@ -31,7 +31,7 @@ Ventcamp = {
         ajaxedForm: true,
         ajaxedFormSuccessMsg: 'Success',
         ajaxedFormErrorMsg: 'An error occured. Please try again later.',
-        toastrPositionClass: 'toast-top-full-width'
+        toastrPositionClass: 'toast-top-right'
     },
 
     mobileDevice: false,
@@ -406,7 +406,7 @@ Ventcamp = {
             this.log( 'Can\'t find toastr. Form messages in alerts.' );
         }
 
-        var validateOptions,
+        var teamValidateOptions,
             submitHandler,
             doneHandler,
             failHandler;
@@ -422,36 +422,16 @@ Ventcamp = {
                 data: $(form).serialize()
             }).done(function(msg) {
                 doneHandler(msg, form);
-
             }).fail(function() {
                 failHandler(form);
-
             });
         }
 
-        validateOptions = {
+        teamValidateOptions = {
             rules: {
-                password: {
-                    required: true,
-                    minlength: 5
-                },
-                confirmPassword: {
-                    required: true,
-                    minlength: 5,
-                    equalTo: '#password'
-                }
-            },
-
-            messages: {
-                password: {
-                    required: 'Please provide a password',
-                    minlength: 'Your password must be at least 5 characters long'
-                },
-                confirmPassword: {
-                    required: 'Please provide a password',
-                    minlength: 'Your password must be at least 5 characters long',
-                    equalTo: 'Please enter the same password as above'
-                }
+                name: 'required',
+                arrival_time: 'required',
+                transport: 'required'
             },
 
             submitHandler: function (form) {
@@ -460,10 +440,8 @@ Ventcamp = {
 
                 if ( $button.length ) {
                     $button.append('<span class="loading fa fa-refresh"></span>');
-
-                }else if ( $input ) {
+                } else if ( $input ) {
                     $input.after('<span class="loading fa fa-refresh"></span>');
-
                 }
 
                 $.ajax({
@@ -472,28 +450,21 @@ Ventcamp = {
                     data: $(form).serialize()
                 }).done(function(msg) {
                     $(form).find('.loading').remove();
-
                     doneHandler(msg, form);
-
                 }).fail(function() {
                     $(form).find('.loading').remove();
-
                     failHandler(form);
-
                 });
             }
         };
 
         doneHandler = function (msg, form) {
-            if( msg === 'ok' ) {
-                form.reset();
-
-                if ( typeof toastr != 'undefined' ) toastr.success('Success');
-                else alert('Success');
-
+            if( msg.status === 'success' ) {
+                if ( typeof toastr != 'undefined' ) toastr.success(msg.message);
+                else alert(msg.message);
             } else {
-                if ( typeof toastr != 'undefined' ) toastr.error('An error occured. Please try again later.');
-                else alert('An error occured. Please try again later.');
+                if ( typeof toastr != 'undefined' ) toastr.error(msg.message);
+                else alert(msg.message);
 
                 _this.log( 'Form message', msg );
             }
@@ -504,69 +475,79 @@ Ventcamp = {
             else alert('An error occured. Please try again later.');
         }
 
-        if ( $('form').not('.mailchimp-form').not('.disable-ajax-form').length ) {
-            $('form').not('.mailchimp-form').not('.disable-ajax-form').each(function() {
-                if ( typeof $.fn.validate == 'function' ) {
-                    $(this).validate(validateOptions);
-                }else {
-                    $(this).on('submit', submitHandler);
+        if ( $('#form-team') ) {
+            if ( typeof $.fn.validate == 'function' ) {
+                $('#form-team').validate(teamValidateOptions);
+            } else {
+                $('#form-team').on('submit', submitHandler);
 
-                    _this.log( 'Can\'t find jQuery.validate function.' );
-                }
-            });
+                _this.log( 'Can\'t find jQuery.validate function.' );
+            };
         }
 
-        if ( $('.mailchimp-form').length ) {
-            $('.mailchimp-form').each(function() {
-                $(this).on('submit', function(event) {
-                    event.preventDefault();
+        // if ( $('form').not('.mailchimp-form').not('.disable-ajax-form').length ) {
+        //     $('form').not('.mailchimp-form').not('.disable-ajax-form').each(function() {
+        //         if ( typeof $.fn.validate == 'function' ) {
+        //             $(this).validate(validateOptions);
+        //         }else {
+        //             $(this).on('submit', submitHandler);
 
-                    var $form = $(this),
-                        $input = $form.find('input[type="submit"]'),
-                        $button = $form.find('button[type="submit"]'),
-                        $fullnameField = '',
-                        $emailField = $form.find('[name=NewsletterEmail]'),
-                        $responseBlock = $form.find('.response'),
-                        email = $emailField.val(),
-                        first_name = '',
-                        last_name = '';
+        //             _this.log( 'Can\'t find jQuery.validate function.' );
+        //         }
+        //     });
+        // }
 
-                    if ($(this).find('[name=NewsletterName]') .length > 0){
-                        $fullnameField = $form.find('[name=NewsletterName]');
-                        fullname = $fullnameField.val().split(' '), // Gwt Full name and split it by space
-                        first_name = fullname[0], // First part is the first name
-                        last_name = fullname[1]; // Second part is Last name
-                        if ( !last_name ) last_name = ''; //By chance they can input only their first name, then we should null the last name since there is none
-                    } else {
-                        first_name = '',
-                        last_name = '';
-                    }
+        // if ( $('.mailchimp-form').length ) {
+        //     $('.mailchimp-form').each(function() {
+        //         $(this).on('submit', function(event) {
+        //             event.preventDefault();
 
-                    if ( $button.length ) {
-                        $button.append('<span class="loading fa fa-refresh"></span>');
+        //             var $form = $(this),
+        //                 $input = $form.find('input[type="submit"]'),
+        //                 $button = $form.find('button[type="submit"]'),
+        //                 $fullnameField = '',
+        //                 $emailField = $form.find('[name=NewsletterEmail]'),
+        //                 $responseBlock = $form.find('.response'),
+        //                 email = $emailField.val(),
+        //                 first_name = '',
+        //                 last_name = '';
 
-                    }else if ( $input ) {
-                        $input.after('<span class="loading fa fa-refresh"></span>');
+        //             if ($(this).find('[name=NewsletterName]') .length > 0){
+        //                 $fullnameField = $form.find('[name=NewsletterName]');
+        //                 fullname = $fullnameField.val().split(' '), // Gwt Full name and split it by space
+        //                 first_name = fullname[0], // First part is the first name
+        //                 last_name = fullname[1]; // Second part is Last name
+        //                 if ( !last_name ) last_name = ''; //By chance they can input only their first name, then we should null the last name since there is none
+        //             } else {
+        //                 first_name = '',
+        //                 last_name = '';
+        //             }
 
-                    }
+        //             if ( $button.length ) {
+        //                 $button.append('<span class="loading fa fa-refresh"></span>');
 
-                    $.ajax({
-                        url: 'process-form-mailchimp.php',
-                        data: 'ajax=true&email=' + escape(email) + '&fname=' + first_name +'&lname=' + last_name,
+        //             }else if ( $input ) {
+        //                 $input.after('<span class="loading fa fa-refresh"></span>');
 
-                        success: function(msg) {
-                            $form.find('.loading').remove();
+        //             }
 
-                            if ( msg.indexOf('Success') !=-1 ) {
-                                $responseBlock.html('<span class="success-message">Success! You are now subscribed to our newsletter!</span>');
-                            } else {
-                                $responseBlock.html('<span class="error-message">' + msg + '</span>');
-                            }
-                        }
-                    });
-                });
-            });
-        }
+        //             $.ajax({
+        //                 url: 'process-form-mailchimp.php',
+        //                 data: 'ajax=true&email=' + escape(email) + '&fname=' + first_name +'&lname=' + last_name,
+
+        //                 success: function(msg) {
+        //                     $form.find('.loading').remove();
+
+        //                     if ( msg.indexOf('Success') !=-1 ) {
+        //                         $responseBlock.html('<span class="success-message">Success! You are now subscribed to our newsletter!</span>');
+        //                     } else {
+        //                         $responseBlock.html('<span class="error-message">' + msg + '</span>');
+        //                     }
+        //                 }
+        //             });
+        //         });
+        //     });
+        // }
     },
 
     // Google map

@@ -37,7 +37,7 @@
             <h5 style="margin-top: 30px;">
                 <span class="highlight">{% block team-title %}{{ title }}{% endblock %}</span>
             </h5>
-            <form action="{% block form-action-team %}{% endblock %}" method="post" class="disable-ajax-form" enctype="multipart/form-data">
+            <form id="form-team" action="{% block form-action-team %}{% endblock %}" method="post" enctype="multipart/form-data">
                 {% include 'message.html' %}
                 {% csrf_token %}
                 <div class="form-group">
