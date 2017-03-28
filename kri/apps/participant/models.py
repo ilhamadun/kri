@@ -34,7 +34,8 @@ class University(models.Model):
             - AssertionError: division is not a member of TEAM_DIVISION
 
         """
-        assert division in ('krai', 'krsbi_beroda', 'krsti', 'krpai'), 'division is not a member of TEAM_DIVISION.'
+        assert division in ('krai', 'krsbi_beroda', 'krsti', 'krpai'), (
+            'division is not a member of TEAM_DIVISION.')
 
         return getattr(self, division)
 
@@ -51,6 +52,9 @@ class University(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural = 'Universities'
 
 
 class TeamManager(models.Manager):
