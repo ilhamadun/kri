@@ -37,7 +37,15 @@ class University(models.Model):
         assert division in ('krai', 'krsbi_beroda', 'krsti', 'krpai'), (
             'division is not a member of TEAM_DIVISION.')
 
-        return getattr(self, division)
+        return bool(getattr(self, division))
+
+    def all_access(self):
+        """List the university's privileges on each division"""
+        access = {}
+        for division in Team.TEAM_DIVISION:
+            access[division[0]] = self.has_access(division[0])
+
+        return access
 
     def team(self, division):
         """Get the university's team for the division
@@ -174,6 +182,7 @@ class Team(models.Model):
 
     @staticmethod
     def division_type_display(key):
+        """Returns display value from TEAM_DIVISION"""
         for d in Team.TEAM_DIVISION:
             if d[0] == key:
                 return d[1]

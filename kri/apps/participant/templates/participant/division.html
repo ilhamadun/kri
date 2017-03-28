@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block inline-style %}
+{{ block.super }}
+<style>
+    h5 {
+        margin-bottom: 25px;
+    }
+
+    #team-members {
+        margin-top: 70px;
+        margin-bottom: 50px;
+    }
+
+    .panel-group-alt .form-group {
+        line-height: 23.4375px;
+    }
+
+    .panel-group-alt input {
+        line-height: 35px;
+        margin-bottom: 15px !important;
+    }
+
+    .panel-body button {
+        margin-bottom: 20px !important;
+    }
+</style>
+{% endblock inline-style %}
+
+{% block content %}
+{% include 'header.html' %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            {% include 'participant/division-nav.html' %}
+            <h5 style="margin-top: 30px;">
+                <span class="highlight">{% block team-title %}{{ title }}{% endblock %}</span>
+            </h5>
+            <form action="{% block form-action-team %}{% endblock %}" method="post" class="disable-ajax-form" enctype="multipart/form-data">
+                {% include 'message.html' %}
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Nama Tim</label>
+                    {{ form_team.name }}
+                    {{ form_team.name.errors }}
+                </div>
+                <div class="form-group">
+                    <label for="arrival_time">Waktu Kedatangan</label>
+                    {{ form_team.arrival_time }}
+                    {{ form_team.arrival_time.errors }}
+                </div>
+                <div class="form-group">
+                    <label for="transport">Transportasi</label>
+                    {{ form_team.transport }}
+                    {{ form_team.transport.errors }}
+                </div>
+                <div class="form-group">
+                    <label for="photo">Foto Tim</label>
+                    {{ form_team.photo }}
+                    {{ form_team.photo.errors }}
+                </div>
+                <div class="form-group align-right">
+                    <button type="submit" class="btn btn-sm">Simpan</button>
+                </div>
+            </form>
+
+            <div id="team-members" class="tabs-wrapper tabs-horizontal">
+                <div class="nav-wrapper">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab-core-member" data-toggle="tab"><span class="fa fa-group"></span> Tim Inti</a></li>
+                        <li><a href="#tab-mechanics" data-toggle="tab"><span class="fa fa-gear"></span> Mekanik</a></li>
+                        <li><a href="#tab-adviser" data-toggle="tab"><span class="fa fa-user"></span> Dosen Pembimbing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="tab-content">
+                    <div id="tab-core-member" class="tab-pane active in fade">
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <div id="core-member" class="panel-group panel-group-alt">
+                                </div>
+                                <div class="align-center">
+                                    <button class="btn btn-sm">Tambah Tim Inti</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-mechanics" class="tab-pane fade">
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <div id="mechanics" class="panel-group panel-group-alt">
+                                </div>
+                                <div class="align-center">
+                                    <button class="btn btn-sm">Tambah Mekanik</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-adviser" class="tab-pane fade">
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <div id="adviser" class="panel-group panel-group-alt">
+                                </div>
+                                <div class="align-center">
+                                    <button class="btn btn-sm">Tambah Dosen Pembimbing</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

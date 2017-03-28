@@ -24,6 +24,7 @@
 		<script src="{% static 'js/respond.min.js' %}"></script>
 	<![endif]-->
 
+	{% block inline-style %}
 	<style>
 		.navigation-header {
 			padding: 0;
@@ -42,7 +43,12 @@
 				padding: 27px 15px 13px 35px;
 			}
 		}
+		.btn.btn-outline-clr.btn-sm {
+			padding-left: 0;
+			padding-right: 0;
+		}
 	</style>
+	{% endblock %}
 </head>
 <body>
     <div class="preloader-mask">
@@ -50,6 +56,29 @@
 	</div>
 
     {% block content %}{% endblock %}
+
+	<section class="footer">
+		<div class="footer-base">
+			<div class="container">
+				<div class="col-md-6">
+					<ul class="footer-nav">
+						<li class="footer-nav item"><a href="#">Kontak</a></li>
+						<li class="footer-nav item"><a href="#">FAQ</a></li>
+					</ul>
+				</div>
+				<div class="col-md-6 align-right">
+					<ul class="socials-nav align-right">
+						<li class="socials-nav-item"><a href="#"><span class="fa fa-twitter"></span></a></li>
+						<li class="socials-nav-item"><a href="#"><span class="fa fa-facebook"></span></a></li>
+						<li class="socials-nav-item"><a href="#"><span class="fa fa-instagram"></span></a></li>
+					</ul>
+					<p class="text-alt">
+						<small>Universitas Gadjah Mada &copy 2017</small>
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
 
     <!--[if lt IE 9]>
 		<script type="text/javascript" src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
