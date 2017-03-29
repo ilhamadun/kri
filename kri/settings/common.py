@@ -24,13 +24,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Application definition
 
 INSTALLED_APPS = [
-    'kri.apps.kri',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles'
+    'django.contrib.staticfiles',
+    'kri.apps.kri',
+    'kri.apps.participant',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_URL = '/user/login'
+LOGIN_URL = '/peserta/login/'
+LOGIN_REDIRECT_URL = '/peserta/'
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'debug',

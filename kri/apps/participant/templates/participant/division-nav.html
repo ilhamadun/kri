@@ -1,0 +1,22 @@
+<div class="row">
+    {% if has_access.krai %}
+    <div class="col-sm-6 col-md-3">
+        <a href="{% url 'participant:krai' %}" class="btn btn-sm {% if not active == 'krai' %} btn-outline-clr {% endif %} btn-block">KRAI</a>
+    </div>
+    {% endif %}
+    {% if has_access.krsbi_beroda %}
+    <div class="col-sm-6 col-md-3">
+        <a href="{% url 'participant:krsbi-beroda' %}" class="btn btn-sm {% if not active == 'krsbi_beroda' %} btn-outline-clr {% endif %} btn-block">KRSBI</a>
+    </div>
+    {% endif %}
+    {% if has_access.krsti %}
+    <div class="col-sm-6 col-md-3">
+        <a href="{% url 'participant:krsti' %}" class="btn btn-sm {% if not active == 'krsti' %} btn-outline-clr {% endif %} btn-block">KRSTI</a>
+    </div>
+    {% endif %}
+    {% if has_access.krpai %}
+    <div class="col-sm-6 col-md-3">
+        <a href="{% url 'participant:krpai' %}" class="btn btn-sm {% if not active == 'krpai' %} btn-outline-clr {% endif %} btn-block">KRPAI</a>
+    </div>
+    {% endif %}
+</div>

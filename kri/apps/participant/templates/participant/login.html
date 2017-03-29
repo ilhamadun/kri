@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block inline-style %}
+{{ block.super }}
+<style>
+.form-login .password-reset {
+    padding-bottom: 12px;
+}
+
+.form-box {
+    border: 1px solid #e9e9e9;
+    padding: 30px 20px 40px;
+}
+
+@media (min-width: 768px) {
+    .form-login .action {
+        margin-top: 15px;
+    }
+
+    .form-login .password-reset {
+        padding-top: 12px;
+    }
+}
+
+@media (max-width: 767px) {
+    .form-login .btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock inline-style %}
+
+{% block content %}
+{% include 'header.html' %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+            <div class="form-box">
+                <h5 class="align-center" style="margin-bottom: 25px;">
+                    <span class="highlight">Login</span>
+                </h5>
+                {% if form.errors %}
+                <div class="alert alert-warning">
+                    Username dan password tidak cocok.
+                </div>
+                {% endif %}
+                <form action="{% url 'participant:login' %}" method="post" class="form-login disable-ajax-form" novalidate>
+                    {% csrf_token %}
+                    <fieldset>
+                        <input type="text" name="username" required aria-required="true" placeholder="Username" autofocus>
+                    </fieldset>
+                    <fieldset>
+                        <input type="password" name="password" required aria-required="true" placeholder="Password">
+                    </fieldset>
+                    <div class="row action">
+                        <div class="col-sm-6 password-reset">
+                            {% comment %}<a href="{% url 'password_reset' %}">Lupa Password?</a>{% endcomment %}
+                        </div>
+                        <div class="col-sm-6 align-right">
+                            <input type="submit" value="Login" class="btn"/>
+                        </div>
+                    </div>
+                    <input type="hidden" name="next" value="{{ next }}" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

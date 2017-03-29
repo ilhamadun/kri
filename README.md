@@ -1,5 +1,7 @@
 # KRI Regional 3 2017
 
+[![Build Status](https://travis-ci.com/ilhamadun/kri.svg?token=HfSF5qs9S26Nqtb4fu4e&branch=master)](https://travis-ci.com/ilhamadun/kri)
+
 Website Kontes Robot Indonesia Regional 3 2017 Universitas Gadjah Mada.
 
 ### Contribution Guides
