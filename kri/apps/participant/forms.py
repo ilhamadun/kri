@@ -13,7 +13,7 @@ class PersonForm(ModelForm):
     class Meta:
         model = Person
         fields = ['name', 'type', 'instance_id', 'birthday', 'gender', 'phone',
-                  'email', 'shirt_size', 'photo']
+                  'email', 'shirt_size']
         widgets = {
             'type': HiddenInput()
         }

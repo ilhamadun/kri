@@ -7,6 +7,12 @@
 
 var Ventcamp;
 
+var personRequestAvailable = {
+    core_member: true,
+    mechanics: true,
+    adviser: true
+};
+
 ;(function($){
 
     $(document).on('ready', function () {
@@ -392,6 +398,39 @@ Ventcamp = {
         });
     },
 
+    personFormRequestInit: function() {
+        $('form.person-request').submit(function(e) {
+            e.preventDefault();
+            var form = $(this);
+            var requestButton = $(this).children('button[name="person_type"]');
+            var person_type = requestButton.val();
+
+            if (personRequestAvailable[person_type]) {
+                requestButton.append('<span class="loading fa fa-refresh"></span>');
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'GET',
+                    data: form.serialize()
+                }).done(function(msg) {
+                    requestButton.find('.loading').remove();
+                    if (msg.status == 'error') {
+                        toastr.error(msg.message);
+                    } else {
+                        $('#' + person_type + '_persons').append(msg);
+                        personRequestAvailable[person_type] = false;
+                        last = $('#' + person_type + '_persons').children('.panel').length;
+                        $('#' + person_type + '_' + last + ' .form-person').validate(personValidateOptions);
+                    }
+                }).fail(function() {
+                    toastr.error('An error occured. Please try again later.');
+                });
+            } else {
+                toastr.error('Anda belum menyimpan anggota terakhir.');
+            }
+
+        })
+    },
+
     formInit: function () {
         var _this = this;
 
@@ -416,14 +455,14 @@ Ventcamp = {
 
             event.preventDefault();
 
-            $.ajax({
-                url: form.action,
-                type: 'POST',
-                data: $(form).serialize()
-            }).done(function(msg) {
-                doneHandler(msg, form);
-            }).fail(function() {
-                failHandler(form);
+            $.ajax({ 
+                url: form.action, 
+                type: 'POST', 
+                data: $(form).serialize() 
+            }).done(function(msg) { 
+                doneHandler(msg, form); 
+            }).fail(function() { 
+                failHandler(form); 
             });
         }
 
@@ -450,6 +489,13 @@ Ventcamp = {
                     data: $(form).serialize()
                 }).done(function(msg) {
                     $(form).find('.loading').remove();
+
+                    $('#team-members').show();
+                    $('input[name="team_id"]').each(function() {
+                        $(this).val(msg.team_id);
+                        console.log($(this).val())
+                    });
+
                     doneHandler(msg, form);
                 }).fail(function() {
                     $(form).find('.loading').remove();
@@ -457,6 +503,46 @@ Ventcamp = {
                 });
             }
         };
+
+        personValidateOptions = {
+            rules: {
+                name: 'required',
+                instance_id: 'required',
+                phone: 'required',
+                email: {
+                    required: true,
+                    email: true
+                },
+                birthday: 'required',
+                gender: 'required',
+                shirt_size: 'required'
+            },
+
+            submitHandler: function (form) {
+                var $input = $(form).find('input[type="submit"]'),
+                    $button = $(form).find('button[type="submit"]');
+
+                if ( $button.length ) {
+                    $button.append('<span class="loading fa fa-refresh"></span>');
+                } else if ( $input ) {
+                    $input.after('<span class="loading fa fa-refresh"></span>');
+                }
+
+                $.ajax({
+                    url: form.action,
+                    type: 'POST',
+                    data: $(form).serialize()
+                }).done(function(msg) {
+                    $(form).find('.loading').remove();
+                    personRequestAvailable[$(form).find('button[name="type"]').val()] = true;
+                    $(form).find('input[name="person_id"]').val(msg.person_id)
+                    doneHandler(msg, form);
+                }).fail(function() {
+                    $(form).find('.loading').remove();
+                    failHandler(form);
+                });
+            }
+        }
 
         doneHandler = function (msg, form) {
             if( msg.status === 'success' ) {
@@ -475,15 +561,8 @@ Ventcamp = {
             else alert('An error occured. Please try again later.');
         }
 
-        if ( $('#form-team') ) {
-            if ( typeof $.fn.validate == 'function' ) {
-                $('#form-team').validate(teamValidateOptions);
-            } else {
-                $('#form-team').on('submit', submitHandler);
-
-                _this.log( 'Can\'t find jQuery.validate function.' );
-            };
-        }
+        $('#form-team').validate(teamValidateOptions);
+        $('.form-person').validate(personValidateOptions);
 
         // if ( $('form').not('.mailchimp-form').not('.disable-ajax-form').length ) {
         //     $('form').not('.mailchimp-form').not('.disable-ajax-form').each(function() {
@@ -1173,6 +1252,8 @@ Ventcamp = {
         if ( this.options.styleSwitcher ) this.buildStyleSwitcher();
 
         if ( this.options.smoothScroll ) this.smoothScrollInit();
+
+        if ( this.options.ajaxedForm ) this.personFormRequestInit();
 
         if ( this.options.ajaxedForm ) this.formInit();
 

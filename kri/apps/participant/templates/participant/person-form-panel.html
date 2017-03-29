@@ -1,0 +1,57 @@
+<div class="panel">
+    <a href="#{{ person_type}}_{{ person_type_count }}" data-toggle="collapse" data-parent="#{{ person_type }}_persons" aria-expanded="true" {% if collapsed%}class="collapsed"{% endif %}>
+        <span class="fa fa-user"></span> {{ person_type_display }} {{ person_type_count }}
+    </a>
+    <div id="{{ person_type}}_{{ person_type_count }}" class="panel-collapse collapse{% if not collapsed %} in{% endif %}">
+        <div class="panel-body">
+            <form action="{% url 'participant:person' person_type %}" method="post" class="form-person">
+                {% csrf_token %}
+                <input type="hidden" name="team_id" value="{{ team_id }}">
+                <input type="hidden" name="person_id" value="{{ person_id }}"> 
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label for="name">Nama</label>
+                        {{ form.name }}
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="instance_id">Nomor Mahasiswa</label>
+                        {{ form.instance_id }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label for="phone">Nomor Telepon</label>
+                        {{ form.phone }}
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="email">Email</label>
+                        {{ form.email }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-4">
+                        <label for="birthday">Tanggal Lahir</label>
+                        {{ form.birthday }}
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="gender">Jenis Kelamin</label>
+                        {{ form.gender }}
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="shirt_size">Ukuran Kaos</label>
+                        {{ form.shirt_size }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-12">
+                        <label for="photo">Pas Foto</label>
+                        {{ form.photo }}
+                    </div>
+                </div>
+                <div class="align-right">
+                    <button type="submit" name="type" value="{{ person_type }}" class="btn btn-sm">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -19,4 +19,6 @@ urlpatterns = [
     url(r'^team/krsti/$', views.krsti, name='krsti'),
     url(r'^team/krpai/$', views.krpai, name='krpai'),
 
+    url(r'^person/(?P<person_type>[\w-]+)/$', views.person, name='person'),
+
 ] + authurls
