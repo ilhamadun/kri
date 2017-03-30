@@ -419,6 +419,15 @@ Ventcamp = {
                         $('#' + person_type + '_persons').append(msg);
                         personRequestAvailable[person_type] = false;
                         last = $('#' + person_type + '_persons').children('.panel').length;
+                        $('#' + person_type + '_' + last + ' .form-person .birthday').datetimepicker({
+                            format: 'DD/MM/YYYY',
+                            icons: dateTimePickerIcons,
+                            widgetPositioning: {
+                                horizontal: 'auto',
+                                vertical: 'top'
+                            },
+                            viewMode: 'years'
+                        });
                         $('#' + person_type + '_' + last + ' .form-person').validate(personValidateOptions);
                     }
                 }).fail(function() {
