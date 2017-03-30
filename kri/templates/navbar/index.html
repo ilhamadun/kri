@@ -32,4 +32,8 @@
     </li>
 </ul>
 
-<a href="#" class="pull-right buy-btn">Pendaftaran</a>
+{% if user.is_authenticated %}
+<a href="{% url 'participant:index' %}" class="pull-right buy-btn">Peserta</a>
+{% else %}
+<a href="{% url 'participant:login' %}" class="pull-right buy-btn">Pendaftaran</a>
+{% endif %}

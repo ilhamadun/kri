@@ -7,8 +7,8 @@ from . import views
 app_name = 'participant'
 
 authurls = [
-    url(r'^login$', auth_views.login, {'template_name': 'participant/login.html'}, name='login'),
-    url(r'^logout$', auth_views.logout_then_login, name='logout'),
+    url(r'^login/$', auth_views.login, {'template_name': 'participant/login.html'}, name='login'),
+    url(r'^logout/$', auth_views.logout_then_login, name='logout'),
 ]
 
 urlpatterns = [

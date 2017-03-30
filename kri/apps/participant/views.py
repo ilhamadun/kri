@@ -9,8 +9,16 @@ from .models import Team, Person
 
 @login_required
 def index(request):
+    teams = {}
+    for t in Team.TEAM_DIVISION:
+        try:
+            teams[t[0]] = request.user.university.team(t[0])
+        except Team.DoesNotExist:
+            teams[t[0]] = None
+
     return render(request, 'participant/index.html', {
-        'has_access': request.user.university.all_access()
+        'has_access': request.user.university.all_access(),
+        'teams': teams,
     })
 
 
