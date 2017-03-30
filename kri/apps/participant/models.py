@@ -262,7 +262,7 @@ class Person(models.Model):
     phone = models.CharField(max_length=15)
     email = models.EmailField()
     shirt_size = models.CharField(max_length=4, choices=SHIRT_SIZE)
-    photo = models.ImageField(upload_to=person_image_directory)
+    photo = models.ImageField(upload_to=person_image_directory, blank=True)
     objects = PersonManager()
 
     def __str__(self):

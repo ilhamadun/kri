@@ -15,6 +15,7 @@ def person_form_panel(person, counter):
         'person_type': person.type,
         'person_type_display': Person.person_type_display(person.type),
         'person_type_count': counter,
+        'photo': person.photo,
         'collapsed': counter > 1
     }
 

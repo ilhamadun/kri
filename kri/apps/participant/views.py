@@ -57,25 +57,27 @@ def division(request, **kwargs):
     if request.method == 'POST':
         form_team = TeamForm(request.POST, request.FILES, instance=instance)
 
+        response_data = {'photo': None}
         if form_team.is_valid():
             team = form_team.save(commit=False)
             team.university = request.user.university
             team.division = kwargs['division']
             team.save()
-            status = 'success'
-            message = 'Informasi tim telah disimpan.'
+            response_data['status'] = 'success'
+            response_data['message'] = 'Informasi tim telah disimpan.'
+            response_data['team_id'] = team.id
+
+            if team.photo:
+                response_data['photo'] = team.photo.url
+
         else:
-            status = 'error'
-            message = 'Ada kesalahan dalam formulir Anda.'
+            response_data['status'] = 'error'
+            response_data['message'] = 'Ada kesalahan dalam formulir Anda.'
 
         if request.is_ajax():
-            return JsonResponse({
-                'status': status,
-                'message': message,
-                'team_id': team.id
-            })
+            return JsonResponse(response_data)
         else:
-            getattr(messages, status)(request, message)
+            getattr(messages, response_data['status'])(request, response_data['message'])
 
     else:
         form_team = TeamForm(instance=instance)
@@ -125,25 +127,24 @@ def person_form_submission(request, person_type):
     instance = get_person(request.POST['person_id'])
     member = save_person(request, person_type, instance)
 
+    response_data = {}
     if member:
-        person_id = member.id
-        status = 'success'
+        response_data['person_id'] = member.id
+        response_data['status'] = 'success'
+
+        if member.photo:
+            response_data['photo'] = member.photo.url
 
         if instance:
-            message = Person.person_type_display(person_type) + ' berhasil diubah.'
+            response_data['message'] = Person.person_type_display(person_type) + ' berhasil diubah.'
         else:
-            message = Person.person_type_display(person_type) + ' berhasil ditambahkan.'
+            response_data['message'] = Person.person_type_display(person_type) + ' berhasil ditambahkan.'
 
     else:
-        status = 'error'
-        message = 'Gagal menambahkan ' + Person.person_type_display(person_type)
-        person_id = None
+        response_data['status'] = 'error'
+        response_data['message'] = 'Gagal menambahkan ' + Person.person_type_display(person_type)
 
-    return JsonResponse({
-        'status': status,
-        'message': message,
-        'person_id': person_id,
-    })
+    return JsonResponse(response_data)
 
 
 def get_person(person_id):
@@ -169,6 +170,8 @@ def save_person(request, person_type, instance):
         member.team = Team.objects.get(pk=request.POST['team_id'])
         member.type = person_type
         member.save()
+    else:
+        print(form_person.errors)
 
     return member
 

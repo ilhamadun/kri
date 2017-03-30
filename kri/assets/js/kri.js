@@ -495,15 +495,19 @@ Ventcamp = {
                 $.ajax({
                     url: form.action,
                     type: 'POST',
-                    data: $(form).serialize()
+                    data: new FormData(form),
+                    processData: false,
+                    contentType: false,
                 }).done(function(msg) {
                     $(form).find('.loading').remove();
 
                     $('#team-members').show();
                     $('input[name="team_id"]').each(function() {
                         $(this).val(msg.team_id);
-                        console.log($(this).val())
                     });
+                    if (msg.photo) {
+                        $('.team-photo-label').html('Foto Tim: <a href="' + msg.photo + '">Foto saat ini.</a>');
+                    }
 
                     doneHandler(msg, form);
                 }).fail(function() {
@@ -537,14 +541,24 @@ Ventcamp = {
                     $input.after('<span class="loading fa fa-refresh"></span>');
                 }
 
+                formData = new FormData(form);
+                console.log($(form).find('input[name="photo"]')[0].files[0]);
+                formData.set('photo', $(form).find('input[name="photo"]')[0].files[0]);
+                console.log(formData.get('photo'));
+
                 $.ajax({
                     url: form.action,
                     type: 'POST',
-                    data: $(form).serialize()
+                    data: formData,
+                    processData: false,
+                    contentType: false,
                 }).done(function(msg) {
                     $(form).find('.loading').remove();
                     personRequestAvailable[$(form).find('button[name="type"]').val()] = true;
                     $(form).find('input[name="person_id"]').val(msg.person_id)
+                    if (msg.photo) {
+                        $(form).find('.person-photo-label').html('Pas Foto: <a href="' + msg.photo + '">Foto saat ini.</a>');
+                    }
                     doneHandler(msg, form);
                 }).fail(function() {
                     $(form).find('.loading').remove();
@@ -571,7 +585,9 @@ Ventcamp = {
         }
 
         $('#form-team').validate(teamValidateOptions);
-        $('.form-person').validate(personValidateOptions);
+        $('.form-person').each(function () {
+            $(this).validate(personValidateOptions);
+        });
 
         // if ( $('form').not('.mailchimp-form').not('.disable-ajax-form').length ) {
         //     $('form').not('.mailchimp-form').not('.disable-ajax-form').each(function() {
