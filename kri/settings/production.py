@@ -33,9 +33,6 @@ DATABASES = {
 
 # Static Files and Compression
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
 COMPRESS_OFFLINE = os.environ.get('COMPRESS_OFFLINE', False)
 COMPRESS_CSS_FILTERS = [
