@@ -13,7 +13,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['kri2017.ugm.ac.id', '10.13.243.40']
+ALLOWED_HOSTS = ['*']
 
 ADMINS = [('Ilham Imaduddin', 'ilham.imaduddin@mail.ugm.ac.id')]
 
