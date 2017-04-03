@@ -2,4 +2,5 @@ django==1.10.6
 psycopg2==2.7.1
 pillow==4.0.0
 django-model-utils==2.6.1
-gunicorn==19.7.1
+django_compressor==2.1.1
+csscompressor

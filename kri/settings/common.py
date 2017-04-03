@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'kri.apps.kri',
     'kri.apps.participant',
+    "compressor",
 ]
 
 MIDDLEWARE = [
@@ -125,5 +126,6 @@ MEDIA_ROOT = os.environ.get('MEDIA_ROOT', "media")
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder'
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
 )
