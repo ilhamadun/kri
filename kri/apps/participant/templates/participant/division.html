@@ -2,8 +2,11 @@
 
 {% load staticfiles participant %}
 
+{% block page-style %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/vendor/bootstrap-datetimepicker.min.css' %}" />
+{% endblock %}]
+
 {% block inline-style %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/lib/bootstrap-datetimepicker.min.css' %}" />
 {{ block.super }}
 <style>
     .division-nav-back {
