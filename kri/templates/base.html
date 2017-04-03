@@ -1,5 +1,5 @@
 <!doctype html>
-{% load staticfiles %}
+{% load staticfiles compress %}
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -16,14 +16,17 @@
 	<link rel="apple-touch-icon" sizes="72x72" href="{% static '/img/apple-touch-icon-72x72.jpg' %}">
 	<link rel="apple-touch-icon" sizes="114x114" href="{% static 'img/apple-touch-icon-114x114.jpg' %}">
 
+	{% compress css %}
 	<link rel="stylesheet" type="text/css" href="{% static 'css/custom-animations.min.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+	{% endcompress %}
 
 	<!--[if lt IE 9]>
 		<script src="{% static 'js/html5shiv.js' %}"></script>
 		<script src="{% static 'js/respond.min.js' %}"></script>
 	<![endif]-->
 
+	{% compress css inline %}
 	{% block inline-style %}
 	<style>
 		.navigation-header {
@@ -61,6 +64,7 @@
 		}
 	</style>
 	{% endblock %}
+	{% endcompress %}
 </head>
 <body>
     <div class="preloader-mask">
@@ -145,6 +149,7 @@
 	<!--<![endif]-->
 
 	<script src="https://maps.googleapis.com/maps/api/js?v=3&libraries=places"></script>
+	{% compress js %}
 	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/jquery.validate.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/toastr.min.js' %}"></script>
@@ -154,7 +159,12 @@
 	<script type="text/javascript" src="{% static 'js/jquery.countTo.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/masonry.pkgd.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/modal-box.js' %}"></script>
+	{% endcompress %}
+	{% compress js inline %}
 	{% block inline-script %}{% endblock %}
+	{% endcompress %}
+	{% compress js %}
 	<script type="text/javascript" src="{% static 'js/kri.js' %}"></script>
+	{% endcompress %}
 </body>
 </html>

@@ -7,14 +7,14 @@
 ================================================ */
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,300italic,400italic,500italic&subset=latin,latin-ext);
 @import url(https://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700);
-@import "lib/font-lineicons.css";
+@import "vendor/font-lineicons.css";
 /* ================================================
 //
 // Libraries
 //
 ================================================ */
-@import "lib/toastr.min.css";
-@import "lib/bootstrap.min.css";
+@import "vendor/toastr.min.css";
+@import "vendor/bootstrap.min.css";
 /*!
  *  Font Awesome 4.3.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
