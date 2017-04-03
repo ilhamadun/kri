@@ -1,9 +1,10 @@
 <ul class="navigation-list pull-left light-text">
-    <li class="navigation-item"><a href="#kri" class="navigation-link">KRI</a></li>
-    <li class="navigation-item"><a href="#kontes" class="navigation-link">Kontes</a></li>
-    <li class="navigation-item"><a href="#jadwal" class="navigation-link">Jadwal</a></li>
-    <li class="navigation-item"><a href="#lokasi" class="navigation-link">Lokasi</a></li>
-    <li class="navigation-item dropdown">
+    {% comment %}<li class="navigation-item"><a href="#kri" class="navigation-link">KRI</a></li>{% endcomment %}
+    <li class="navigation-item"><a href="{% url 'kri:index' %}#kontes" class="navigation-link">Kontes</a></li>
+    <li class="navigation-item"><a href="{% url 'kri:index' %}#jadwal" class="navigation-link">Jadwal</a></li>
+    <li class="navigation-item"><a href="{% url 'kri:index' %}#lokasi" class="navigation-link">Lokasi</a></li>
+    
+    {% comment %}<li class="navigation-item dropdown">
         <a class="navigation-link dropdown-toggle" data-toggle="dropdown">Acara</a>
         <ul class="dropdown-menu" style="max-height: 468px;">
             <li class="navigation-item">
@@ -29,7 +30,7 @@
                 <a href="#" class="navigation-link">Aturan Pers dan Liputan Kegiatan</a>
             </li>
         </ul>
-    </li>
+    </li>{% endcomment %}
 </ul>
 
 {% if user.is_authenticated %}

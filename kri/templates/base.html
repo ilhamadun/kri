@@ -38,6 +38,9 @@
 		.navigation-link {
 			letter-spacing: 0.1em;
 		}
+		.section {
+			padding: 50px 0;
+		}
 		.section-peserta {
 			margin-bottom: 50px;
 		}
@@ -47,6 +50,9 @@
 			}
 			.navigation-header .navbar-toggle {
 				padding: 27px 15px 13px 35px;
+			}
+			.section {
+				padding: 30px 0;
 			}
 		}
 		.btn.btn-outline-clr.btn-sm {
@@ -63,8 +69,8 @@
 
     {% block content %}{% endblock %}
 
-	<section class="footer">
-		<div class="container">
+	<section class="footer" style="padding: 0;">
+		{% comment %}<div class="container">
 			<div class="col-md-4">
 				<div class="widget about-widget">
 					<h6 class="widget-head">KRI Regional 3 <span class="highlight">UGM</span></h6>
@@ -112,24 +118,20 @@
 					</ul>
 				</div>
 			</div>
-		</div>
+		</div>{% endcomment %}
 		<div class="footer-base">
 			<div class="container">
 				<div class="col-md-6">
-					<ul class="footer-nav">
-						<li class="footer-nav item"><a href="#">Kontak</a></li>
-						<li class="footer-nav item"><a href="#">FAQ</a></li>
-					</ul>
-				</div>
-				<div class="col-md-6 align-right">
-					<ul class="socials-nav align-right">
-						<li class="socials-nav-item"><a href="#"><span class="fa fa-twitter"></span></a></li>
-						<li class="socials-nav-item"><a href="#"><span class="fa fa-facebook"></span></a></li>
-						<li class="socials-nav-item"><a href="#"><span class="fa fa-instagram"></span></a></li>
-					</ul>
 					<p class="text-alt">
 						<small>Universitas Gadjah Mada &copy 2017</small>
 					</p>
+				</div>
+				<div class="col-md-6 align-right">
+					<ul class="socials-nav align-right">
+						<li class="socials-nav-item"><a target="_blank" href="https://twitter.com/kri2017reg3"><span class="fa fa-twitter"></span></a></li>
+						<li class="socials-nav-item"><a target="_blank" href="https://www.facebook.com/KRI-2017-Regional-3-777503489111419/"><span class="fa fa-facebook"></span></a></li>
+						<li class="socials-nav-item"><a target="_blank" href="https://www.instagram.com/kri2017reg3/"><span class="fa fa-instagram"></span></a></li>
+					</ul>
 				</div>
 			</div>
 		</div>
