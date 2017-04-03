@@ -10,6 +10,7 @@
 .form-box {
     border: 1px solid #e9e9e9;
     padding: 30px 20px 40px;
+    margin: 40px 0 100px;
 }
 
 @media (min-width: 768px) {
@@ -23,6 +24,9 @@
 }
 
 @media (max-width: 767px) {
+    .form-box {
+        margin: 0 0 60px;
+    }
     .form-login .btn {
         width: 100%;
     }
@@ -40,6 +44,9 @@
                 <h5 class="align-center" style="margin-bottom: 25px;">
                     <span class="highlight">Login</span>
                 </h5>
+                <div class="alert alert-info">
+                    Username dan password akan diinformasikan oleh LO.
+                </div>
                 {% if form.errors %}
                 <div class="alert alert-warning">
                     Username dan password tidak cocok.

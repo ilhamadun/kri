@@ -1,12 +1,120 @@
 {% extends 'base.html' %}
 
+{% block inline-style %}
+{{ block.super }}
+<style>
+    .team-overview {
+        margin: 20px 0;
+    }
+</style>
+{% endblock inline-style %}
+
 {% block content %}
 {% include 'header.html' %}
 
-<div class="container">
+<div class="section-peserta container">
     <div class="row">
-        <div class="col-sm-8 col-sm-offset-2">
+        <div class="col-sm-10 col-sm-offset-1">
             {% include 'participant/division-nav.html' %}
+            <h5 style="margin-top: 30px;">
+                <span class="highlight">{{ user.university.name }}</span>
+            </h5>
+            <div class="row">
+                {% if has_access.krai %}
+                <div class="col-md-6">
+                    <div class="team-overview">
+                        <h6>Kontes Robot ABU Indonesia <small><a href="{% url 'participant:krai' %}"><span class="fa fa-edit"></span></a></small></h6>
+                        <div class="row">
+                            <div class="col-xs-8">Nama tim:</div>
+                            <div class="col-xs-4">{{ teams.krai.name|default:'-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">Tim Inti:</div>
+                            <div class="col-xs-4">{% if teams.krai %}{{ teams.krai.core_member.count }} / {{ teams.krai.max_core_member }}{% else %} - {% endif %}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">Mekanik:</div>
+                            <div class="col-xs-4">{% if teams.krai %}{{ teams.krai.mechanics.count }} / {{ teams.krai.max_mechanics }}{% else %} - {% endif %}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">Dosen Pembimbing:</div>
+                            <div class="col-xs-4">{% if teams.krai %}{{ teams.krai.adviser.count }} / {{ teams.krai.max_adviser }}{% else %} - {% endif %}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if has_access.krsbi_beroda %}
+                <div class="col-md-6">
+                    <div class="team-overview">
+                        <h6>Kontes Robot Sepak Bola Beroda Indonesia <small><a href="{% url 'participant:krsbi-beroda' %}"><span class="fa fa-edit"></span></a></small></h6>
+                        <div class="row">
+                            <div class="col-xs-8">Nama tim:</div>
+                            <div class="col-xs-4">{{ teams.krsbi_beroda.name|default:'-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">Tim Inti:</div>
+                            <div class="col-xs-4">{% if teams.krsbi_beroda %}{{ teams.krsbi_beroda.core_member.count }} / {{ teams.krsbi_beroda.max_core_member }}{% else %} - {% endif %}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">Mekanik:</div>
+                            <div class="col-xs-4">{% if teams.krsbi_beroda %}{{ teams.krsbi_beroda.mechanics.count }} / {{ teams.krsbi_beroda.max_mechanics }}{% else %} - {% endif %}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">Dosen Pembimbing:</div>
+                            <div class="col-xs-4">{% if teams.krsbi_beroda %}{{ teams.krsbi_beroda.adviser.count }} / {{ teams.krsbi_beroda.max_adviser }}{% else %} - {% endif %}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if has_access.krsti %}
+                <div class="col-md-6">
+                    <div class="team-overview">
+                        <h6>Kontes Robot Seni Tari Indonesia <small><a href="{% url 'participant:krsti' %}"><span class="fa fa-edit"></span></a></small></h6>
+                        <div class="row">
+                            <div class="col-xs-8">Nama tim:</div>
+                            <div class="col-xs-4">{{ teams.krsti.name|default:'-' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">Tim Inti:</div>
+                            <div class="col-xs-4">{% if teams.krsti %}{{ teams.krsti.core_member.count }} / {{ teams.krsti.max_core_member }}{% else %} - {% endif %}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">Mekanik:</div>
+                            <div class="col-xs-4">{% if teams.krsti %}{{ teams.krsti.mechanics.count }} / {{ teams.krsti.max_mechanics }}{% else %} - {% endif %}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">Dosen Pembimbing:</div>
+                            <div class="col-xs-4">{% if teams.krsti %}{{ teams.krsti.adviser.count }} / {{ teams.krsti.max_adviser }}{% else %} - {% endif %}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if has_access.krpai %}
+                <div class="col-md-6">
+                    <div class="team-overview">
+                        <h6>Kontes Robot Pemadam Api Indonesia <small><a href="{% url 'participant:krpai' %}"><span class="fa fa-edit"></span></a></small></h6>
+                        <div class="row">
+                            <div class="col-xs-8">Nama tim:</div>
+                            <div class="col-xs-4">{{ teams.krpai.name|default:'-' }}</div>
+                        </div>
+                        {% if teams.krpai %}
+                        <div class="row">
+                            <div class="col-xs-8">Tim Inti:</div>
+                            <div class="col-xs-4">{% if teams.krpai %}{{ teams.krpai.core_member.count }} / {{ teams.krpai.max_core_member }}{% else %} - {% endif %}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">Mekanik:</div>
+                            <div class="col-xs-4">{% if teams.krpai %}{{ teams.krpai.mechanics.count }} / {{ teams.krpai.max_mechanics }}{% else %} - {% endif %}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">Dosen Pembimbing:</div>
+                            <div class="col-xs-4">{% if teams.krpai %}{{ teams.krpai.adviser.count }} / {{ teams.krpai.max_adviser }}{% else %} - {% endif %}</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

@@ -1,6 +1,6 @@
 from django import template
 from kri.apps.participant.forms import PersonForm
-from kri.apps.participant.models import Person
+from kri.apps.participant.models import Person, Team
 
 
 register = template.Library()
@@ -15,5 +15,10 @@ def person_form_panel(person, counter):
         'person_type': person.type,
         'person_type_display': Person.person_type_display(person.type),
         'person_type_count': counter,
+        'photo': person.photo,
         'collapsed': counter > 1
     }
+
+@register.simple_tag
+def division_title(division):
+    return Team.division_type_display(division)

@@ -1,1 +1,428 @@
-Hello, World!
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<section id="hero" class="hero-section bg1 bg-cover window-height light-text">
+    <ul class="socials-nav">
+        <li class="socials-nav-item"><a href="https://twitter.com/kri2017reg3" target="_blank"><span class="fa fa-twitter"></span></a></li>
+        <li class="socials-nav-item"><a href="https://www.facebook.com/KRI-2017-Regional-3-777503489111419/" target="_blank"><span class="fa fa-facebook"></span></a></li>
+        <li class="socials-nav-item"><a href="https://www.instagram.com/kri2017reg3/" target="_blank"><span class="fa fa-instagram"></span></a></li>
+    </ul>
+    <div class="heading-block centered-block align-center">
+        <div class="container">
+            <h5 class="heading-alt" style="margin-bottom: 8px;"><span class="fa fa-calendar-o base-clr-txt"></span>13.Mei <span class="fa fa-map-marker base-clr-txt" style="margin-left: 14px;"></span>UGM</h5>
+            <h1 class="extra-heading" style="font-size: 4em;">Kontes Robot Indonesia</h1>
+            <h4 class="base-font"><strong>Regional 3 2017</strong></h4>
+        </div>
+    </div>
+</section>
+
+{% include 'header.html' %}
+
+{% comment %}
+<section id="kri" class="section align-center">
+    <div class="container">
+        <span class="icon section-icon icon-education-science-20"></span>
+        <h3>Mencari Robot Terbaik</h3>
+        <p class="text-alt">Lorem Ipsum is simply <span class="highlight">dummy text</span> of the printing and typesetting industry</p>
+        <br />
+        <br />
+
+        <div class="tabs-wrapper tabs-horizontal">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#horizontal_tab1" data-toggle="tab">
+                    <h6 class="heading-alt"><span class="fa fa-rocket"></span> Kontes Robot Indonesia</h6>
+                </a></li>
+                <li><a href="#horizontal_tab2" data-toggle="tab">
+                    <h6 class="heading-alt"><span class="fa fa-group"></span> Peserta</h6>
+                </a></li>
+                <li><a href="#horizontal_tab3" data-toggle="tab">
+                    <h6 class="heading-alt"><span class="fa fa-star"></span> Universitas Gadjah Mada</h6>
+                </a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="horizontal_tab1" class="tab-pane fade active in">
+                    <div class="col-sm-5 img-column">
+                        <img src="{% static 'img/logo-big.jpg' %}" alt="" class="img-responsive" />
+                    </div>
+                    <div class="col-sm-7 align-left">
+                        <h6>Kontes Robot Indonesia</h6>
+                        <p>Kontes Robot Indonesia adalah kontes robot tahunan  bagi mahasiswa. Kontes yang diselenggarakan oleh Kementerian Riset, Teknologi dan Pendidikan Tinggi ini bertujuan untuk meningkatkan minat, bakat dan kemampuan mahasiswa pada pengembangan teknologi terkini khususnya di bidang robotika.</p>
+                        <p>Pada tahun ini, Kontes Robot Indonesia Regional 3 diselenggarakan di Universitas Gadjah Mada, Yogyakarta.</p>
+                    </div>
+                </div>
+
+                <div id="horizontal_tab2" class="tab-pane fade">
+                    <div class="col-sm-7 align-right">
+                        <h6>Peserta</h6>
+                        <p>Faucibus sed pretium. Ridiculus <strong>consectetuer</strong> et. In arcu enim sit in libero scelerisque mauris sed. Nullam eleifend in varius arcu vitae feugiat magna id ut morbi consectetuer. In vivamus arcu. Id ut dui. Sed massa in. Scelerisque suscipit quisque maecenas aliquet in. Wisi mi ipsum. Elit et mauris. Duis in magni praesent <a href="#">content</a> massa.</p>
+                        <p>Consectetuer amet wisi felis sem <strong>tincidunt</strong>. Ultricies blandit id euismod inceptos mauris pulvinar nec nullam quisque consequat nulla eleifend elementum vivamus aliquam placerat nec. Vehicula leo praesent vitae leo mauris ullamcorper lectus sed mollis id turpis dui cras suspendisse. Porta diam <a href="#">eleifend</a>. Praesent magnis sit. Enim ligula vel justo urna.</p>
+                        <ul>
+                            <li>Nisl cras vitae wisi odio amet.</li>
+                            <li>Lacus amet vestibulum belas</li>
+                            <li>Quis nunc curabitur assumenda</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-sm-5 img-column">
+                        <img src="{% static 'img/kri-robot.png' %}" alt="" class="img-responsive" />
+                    </div>
+                </div>
+
+                <div id="horizontal_tab3" class="tab-pane fade">
+                    <div class="col-sm-5 img-column">
+                        <img src="{% static 'img/kri-robot.png' %}" alt="" class="img-responsive" />
+                    </div>
+                    <div class="col-sm-7 align-left">
+                        <h6>Universitas Gadjah Mada</h6>
+                        <p>Faucibus sed pretium. Ridiculus <strong>consectetuer</strong> et. In arcu enim sit in libero scelerisque mauris sed. Nullam eleifend in varius arcu vitae feugiat magna id ut morbi consectetuer. In vivamus arcu. Id ut dui. Sed massa in. Scelerisque suscipit quisque maecenas aliquet in. Wisi mi ipsum. Elit et mauris. Duis in magni praesent <a href="#">content</a> massa.</p>
+                        <ul>
+                            <li>Nisl cras vitae wisi odio amet.</li>
+                            <li>Lacus amet vestibulum belas</li>
+                            <li>Quis nunc curabitur assumenda</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endcomment %}
+
+<section id="kontes" class="section align-center">
+    <div class="container">
+        <span class="icon section-icon icon-education-science-20"></span>
+        <h3>Mencari Robot Terbaik</h3>
+        <p class="text-alt lead">Mempertandingkan 73 Robot dalam 4 Kategori</p>
+        <br />
+        <br />
+        {% comment %}<span class="icon section-icon icon-badges-votes-05"></span>
+        <h3>Kontes</h3>
+        <br />
+        <br />{% endcomment %}
+
+        <div class="col-sm-3">
+            <div class="speaker">
+                <div class="photo-wrapper rounded"><img src="{% static 'img/krai.jpg' %}" alt="John Doe" class="img-responsive"></div>
+                <h3 class="name">KRAI</h3>
+                <p class="text-alt"><small>Kontes Robot ABU Indonesia</small></p>
+                <p class="about">Tema KRAI 2017 adalah "Lempar Cakram", selaras dengan tema ABU Robocon 2017 <em>"The Landing Disc"</em>. Pada kontes ini robot melempar cakram menuju tempat pendaratan.</p>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="speaker">
+                <div class="photo-wrapper rounded"><img src="{% static 'img/krsbi.jpg' %}" alt="John Doe" class="img-responsive"></div>
+                <h3 class="name">KRSBI Beroda</h3>
+                <p class="text-alt"><small>Kontes Robot Sepak Bola Indonesia</small></p>
+                <p class="about">KRSBI Beroda mengacu pada <em>RoboCup Middle Size League (MSL)</em>. Panjang dan lebar robot 30-52 cm dan tinggi 40-80 cm. Robot bermain di lapangan berukuran 4,8 x 7,2 m.</p>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="speaker">
+                <div class="photo-wrapper rounded"><img src="{% static 'img/krsti.jpg' %}" alt="John Doe" class="img-responsive"></div>
+                <h3 class="name">KRSTI</h3>
+                <p class="text-alt"><small>Kontes Robot Seni Tari Indonesia</small></p>
+                <p class="about">KRSTI menampilkan robot-robot humanoid yang dapat menari berdasarkan gerakan seni tari dan budaya bangsa di Indonesia dengan tema "Robot Penari Gending Sriwijaya".</p>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="speaker">
+                <div class="photo-wrapper rounded"><img src="{% static 'img/krpai.jpg' %}" alt="John Doe" class="img-responsive"></div>
+                <h3 class="name">KRPAI</h3>
+                <p class="text-alt"><small>Kontes Robot Pemadam Api Indonesia</small></p>
+                <p class="about">KRPAI 2017 bertema "Robot Cerdas Berkaki Pemadam Api". Robot yang menggunakan penggerak kaki secara mandiri bergerak untuk menemukan dan memadamkan api lilin.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="jadwal" class="section schedule-section align-center">
+    <div class="container">
+        <span class="icon section-icon icon-office-21"></span>
+        <h3>Rundown Acara</h3>
+        <br />
+        <br />
+
+        <div class="col-md-10 col-md-offset-1">
+
+            <!-- Schedule start -->
+            <div class="row schedule">
+
+                <!-- Navigation by day start -->
+                <ul class="nav nav-schedule">
+                    <li class="active"><a href="#schedule3_day1" data-toggle="tab"><h5 class="highlight">Hari 1</h5><p class="text-alt">11/05/2017</p></a></li>
+                    <li><a href="#schedule3_day2" data-toggle="tab"><h5 class="highlight">Hari 2</h5><p class="text-alt">12/05/2017</p></a></li>
+                    <li><a href="#schedule3_day3" data-toggle="tab"><h5 class="highlight">Hari 3</h5><p class="text-alt">13/05/2017</p></a></li>
+                </ul>
+                <!-- Navigation by day end -->
+
+                <!-- First level content start -->
+                <div class="tab-content">
+
+                    <!-- Day 1 content start -->
+                    <div id="schedule3_day1" class="tab-pane fade active in">
+
+                        <!-- Second level content start -->
+                        <div class="tab-content tab-content-schedule">
+
+                            <!-- Main content start -->
+                            <div id="schedule3_day1_main" class="tab-pane fade active in">
+
+                                <!-- Accordion start -->
+                                <div class="panel-group" id="schedule3_day1_main_timeline">
+                                    <p class="lead text-center">Coming Soon</p>
+
+                                    {% comment %}<!-- Lecture start -->
+                                    <div class="panel schedule-item">
+                                        <div class="lecture-icon-wrapper">
+                                            <span class="fa fa-cutlery"></span>
+                                        </div>
+                                        <a data-toggle="collapse" data-parent="#schedule3_day1_main_timeline" href="#schedule3_day1_main_time1" class="schedule-item-toggle">
+                                            <strong class="time highlight"><span class="icon icon-office-24"></span>2:20 PM</strong>
+                                            <h6 class="title">How to organize great events<i class="icon icon-arrows-06"></i></h6>
+                                        </a>
+                                        <div id="schedule3_day1_main_time1" class="panel-collapse collapse in schedule-item-body">
+                                            <article>
+                                                <p class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type.</p>
+                                                <strong class="highlight speaker-name">Michael Lambert</strong>
+                                            </article>
+                                        </div>
+                                    </div>
+                                    <!-- Lecture end -->
+
+                                    <!-- Lecture start -->
+                                    <div class="panel schedule-item">
+                                        <div class="lecture-icon-wrapper"></div>
+                                        <a data-toggle="collapse" data-parent="#schedule3_day1_main_timeline" href="#schedule3_day1_main_time2" class="schedule-item-toggle collapsed">
+                                            <strong class="time highlight"><span class="icon icon-office-24"></span>5:40 PM</strong>
+                                            <h6 class="title">Scaling into crowded space<i class="icon icon-arrows-06"></i></h6>
+                                        </a>
+                                        <div id="schedule3_day1_main_time2" class="panel-collapse collapse schedule-item-body">
+                                            <article>
+                                                <p class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type.</p>
+                                                <strong class="highlight speaker-name">Michael Lambert</strong>
+                                            </article>
+                                        </div>
+                                    </div>
+                                    <!-- Lecture end -->
+
+                                    <!-- Lecture start -->
+                                    <div class="panel schedule-item">
+                                        <div class="lecture-icon-wrapper">
+                                            <img src="../assets/img/speakers/speaker1.jpg" alt="" class="img-responsive">
+                                        </div>
+                                        <a data-toggle="collapse" data-parent="#schedule3_day1_main_timeline" href="#schedule3_day1_main_time3" class="schedule-item-toggle collapsed">
+                                            <strong class="time highlight"><span class="icon icon-office-24"></span>7:00 PM</strong>
+                                            <h6 class="title">Close your eyes around the world<i class="icon icon-arrows-06"></i></h6>
+                                        </a>
+                                        <div id="schedule3_day1_main_time3" class="panel-collapse collapse schedule-item-body">
+                                            <article>
+                                                <p class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type.</p>
+                                                <strong class="highlight speaker-name">Michael Lambert</strong>
+                                            </article>
+                                        </div>
+                                    </div>
+                                    <!-- Lecture end -->
+
+                                    <!-- Lecture start -->
+                                    <div class="panel schedule-item">
+                                        <div class="lecture-icon-wrapper">
+                                            <img src="../assets/img/speakers/speaker1.jpg" alt="" class="img-responsive">
+                                        </div>
+                                        <a data-toggle="collapse" data-parent="#schedule3_day1_main_timeline" href="#schedule3_day1_main_time4" class="schedule-item-toggle collapsed">
+                                            <strong class="time highlight"><span class="icon icon-office-24"></span>7:40 PM</strong>
+                                            <h6 class="title">Passion and people<i class="icon icon-arrows-06"></i></h6>
+                                        </a>
+                                        <div id="schedule3_day1_main_time4" class="panel-collapse collapse schedule-item-body">
+                                            <article>
+                                                <p class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type.</p>
+                                                <strong class="highlight speaker-name">Michael Lambert</strong>
+                                            </article>
+                                        </div>
+                                    </div>
+                                    <!-- Lecture end -->{% endcomment %}
+
+                                </div>
+                                <!-- Accordion end -->
+
+                            </div>
+                            <!-- Main content end -->
+
+                        </div>
+                        <!-- Second level content end -->
+
+                    </div>
+                    <!-- Day 1 content end -->
+
+                    <!-- Day 2 content start -->
+                    <div id="schedule3_day2" class="tab-pane fade in">
+
+                        <!-- Second level content start -->
+                        <div class="tab-content tab-content-schedule">
+
+                            <!-- Main content start -->
+                            <div id="schedule3_day2_main" class="tab-pane fade active in">
+
+                                <!-- Accordion start -->
+                                <div class="panel-group" id="schedule3_day2_main_timeline">
+                                    <p class="lead text-center">Coming Soon</p>
+
+                                    {% comment %}<!-- Lecture start -->
+                                    <div class="panel schedule-item">
+                                        <div class="lecture-icon-wrapper">
+                                            <img src="../assets/img/speakers/speaker1.jpg" alt="" class="img-responsive">
+                                        </div>
+                                        <a data-toggle="collapse" data-parent="#schedule3_day2_main_timeline" href="#schedule3_day2_main_time1" class="schedule-item-toggle">
+                                            <strong class="time highlight"><span class="icon icon-office-24"></span>2:20 PM</strong>
+                                            <h6 class="title">How to organize great events<i class="icon icon-arrows-06"></i></h6>
+                                        </a>
+                                        <div id="schedule3_day2_main_time1" class="panel-collapse collapse in schedule-item-body">
+                                            <article>
+                                                <p class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type.</p>
+                                                <strong class="highlight speaker-name">Michael Lambert</strong>
+                                            </article>
+                                        </div>
+                                    </div>
+                                    <!-- Lecture end -->
+
+                                    <!-- Lecture start -->
+                                    <div class="panel schedule-item">
+                                        <div class="lecture-icon-wrapper">
+                                            <img src="../assets/img/speakers/speaker1.jpg" alt="" class="img-responsive">
+                                        </div>
+                                        <a data-toggle="collapse" data-parent="#schedule3_day2_main_timeline" href="#schedule3_day2_main_time3" class="schedule-item-toggle collapsed">
+                                            <strong class="time highlight"><span class="icon icon-office-24"></span>7:00 PM</strong>
+                                            <h6 class="title">Close your eyes around the world<i class="icon icon-arrows-06"></i></h6>
+                                        </a>
+                                        <div id="schedule3_day2_main_time3" class="panel-collapse collapse schedule-item-body">
+                                            <article>
+                                                <p class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type.</p>
+                                                <strong class="highlight speaker-name">Michael Lambert</strong>
+                                            </article>
+                                        </div>
+                                    </div>
+                                    <!-- Lecture end -->
+
+                                    <!-- Lecture start -->
+                                    <div class="panel schedule-item">
+                                        <div class="lecture-icon-wrapper">
+                                            <img src="../assets/img/speakers/speaker1.jpg" alt="" class="img-responsive">
+                                        </div>
+                                        <a data-toggle="collapse" data-parent="#schedule3_day2_main_timeline" href="#schedule3_day2_main_time4" class="schedule-item-toggle collapsed">
+                                            <strong class="time highlight"><span class="icon icon-office-24"></span>7:40 PM</strong>
+                                            <h6 class="title">Passion and people<i class="icon icon-arrows-06"></i></h6>
+                                        </a>
+                                        <div id="schedule3_day2_main_time4" class="panel-collapse collapse schedule-item-body">
+                                            <article>
+                                                <p class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type.</p>
+                                                <strong class="highlight speaker-name">Michael Lambert</strong>
+                                            </article>
+                                        </div>
+                                    </div>
+                                    <!-- Lecture end -->{% endcomment %}
+
+                                </div>
+                                <!-- Accordion end -->
+
+                            </div>
+                            <!-- Main content end -->
+
+                        </div>
+                        <!-- Second level content end -->
+
+                    </div>
+                    <!-- Day 2 content end -->
+
+                    <!-- Day 3 content start -->
+                    <div id="schedule3_day3" class="tab-pane fade in">
+
+                        <!-- Second level content start -->
+                        <div class="tab-content tab-content-schedule">
+
+                            <!-- Main content start -->
+                            <div id="schedule3_day3_main" class="tab-pane fade active in">
+
+                                <!-- Accordion start -->
+                                <div class="panel-group" id="schedule3_day3_main_timeline">
+                                    <p class="lead text-center">Coming Soon</p>
+                                    {% comment %}<!-- Lecture start -->
+                                    <div class="panel schedule-item">
+                                        <div class="lecture-icon-wrapper">
+                                            <img src="../assets/img/speakers/speaker1.jpg" alt="" class="img-responsive">
+                                        </div>
+                                        <a data-toggle="collapse" data-parent="#schedule3_day3_main_timeline" href="#schedule3_day3_main_time1" class="schedule-item-toggle">
+                                            <strong class="time highlight"><span class="icon icon-office-24"></span>2:20 PM</strong>
+                                            <h6 class="title">How to organize great events<i class="icon icon-arrows-06"></i></h6>
+                                        </a>
+                                        <div id="schedule3_day3_main_time1" class="panel-collapse collapse in schedule-item-body">
+                                            <article>
+                                                <p class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type.</p>
+                                                <strong class="highlight speaker-name">Michael Lambert</strong>
+                                            </article>
+                                        </div>
+                                    </div>
+                                    <!-- Lecture end -->
+
+                                    <!-- Lecture start -->
+                                    <div class="panel schedule-item">
+                                        <div class="lecture-icon-wrapper">
+                                            <img src="../assets/img/speakers/speaker1.jpg" alt="" class="img-responsive">
+                                        </div>
+                                        <a data-toggle="collapse" data-parent="#schedule3_day3_main_timeline" href="#schedule3_day3_main_time2" class="schedule-item-toggle collapsed">
+                                            <strong class="time highlight"><span class="icon icon-office-24"></span>5:40 PM</strong>
+                                            <h6 class="title">Scaling into crowded space<i class="icon icon-arrows-06"></i></h6>
+                                        </a>
+                                        <div id="schedule3_day3_main_time2" class="panel-collapse collapse schedule-item-body">
+                                            <article>
+                                                <p class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type.</p>
+                                                <strong class="highlight speaker-name">Michael Lambert</strong>
+                                            </article>
+                                        </div>
+                                    </div>
+                                    <!-- Lecture end -->{% endcomment %}
+
+                                </div>
+                                <!-- Accordion end -->
+
+                            </div>
+                            <!-- Main content end -->
+
+                        </div>
+                        <!-- Second level content end -->
+
+                    </div>
+                    <!-- Day 3 content end -->
+
+                </div>
+                <!-- First level content end -->
+
+            </div>
+            <!-- Schedule end -->
+        </div>
+
+    </div>
+
+</section>
+
+<section id="lokasi">
+    <div class="contacts-wrapper">
+        <div id="contacts-map" class="map" data-settings="{% static 'js/map-settings.json' %}" style="height:560px;"></div>
+
+        <div class="container contacts-on-map-container">
+            <div class="contacts-on-map">
+                <h3>Lokasi</h3>
+
+                <ul class="list">
+                    <li><i class="fa fa-map-marker"></i>Grha Sabha Pramana, UGM</li>
+                    <li><i class="fa fa-envelope"></i>kri2017@ugm.ac.id</li>
+                    <li><i class="fa fa-phone"></i>0811 284 644</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
