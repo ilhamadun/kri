@@ -35,12 +35,6 @@ DATABASES = {
 
 COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
 COMPRESS_OFFLINE = os.environ.get('COMPRESS_OFFLINE', False)
-COMPRESS_CSS_FILTERS = [
-    'compressor.filters.css_default.CssAbsoluteFilter',
-    'compressor.filters.cssmin.CSSCompressorFilter'
-]
-COMPRESS_JS_FILTERS = ['compressor.filters.jsmin.JSMinFilter']
-COMPRESS_OUTPUT_DIR = 'cache'
 
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True

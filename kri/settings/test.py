@@ -28,3 +28,6 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True

@@ -26,5 +26,6 @@ before_script:
 script:
   - python manage.py migrate
   - python manage.py collectstatic --no-input
+  - python manage.py compress
   - python manage.py test
   
