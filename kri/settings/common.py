@@ -135,4 +135,4 @@ COMPRESS_CSS_FILTERS = [
     'compressor.filters.cssmin.CSSCompressorFilter'
 ]
 COMPRESS_JS_FILTERS = ['compressor.filters.jsmin.JSMinFilter']
-COMPRESS_OUTPUT_DIR = 'cache'
+COMPRESS_OUTPUT_DIR = os.environ.get('COMPRESS_OUTPUT_DIR', "cache")
