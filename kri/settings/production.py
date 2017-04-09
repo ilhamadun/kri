@@ -31,6 +31,13 @@ DATABASES = {
     }
 }
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD', '')
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER', '')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 # Static Files and Compression
 
 COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
