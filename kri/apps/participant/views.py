@@ -92,9 +92,9 @@ def division(request, **kwargs):
         instance = None
 
     if request.method == 'POST':
-        form_team = TeamForm(request.POST, request.FILES, instance=instance)
+        form_team = TeamForm(request.POST, instance=instance)
 
-        response_data = {'photo': None}
+        response_data = {}
         if form_team.is_valid():
             team = form_team.save(commit=False)
             team.university = request.user.university
@@ -103,9 +103,6 @@ def division(request, **kwargs):
             response_data['status'] = 'success'
             response_data['message'] = 'Informasi tim telah disimpan.'
             response_data['team_id'] = team.id
-
-            if team.photo:
-                response_data['photo'] = team.photo.url
 
         else:
             response_data['status'] = 'error'

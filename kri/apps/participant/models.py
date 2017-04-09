@@ -159,7 +159,6 @@ class Team(models.Model):
     division = models.CharField(max_length=12, choices=TEAM_DIVISION)
     arrival_time = models.DateTimeField(null=True)
     transport = models.CharField(max_length=100, null=True)
-    photo = models.ImageField(upload_to=team_image_directory, null=True, blank=True)
     objects = TeamManager()
 
     def max_core_member(self):
@@ -253,15 +252,6 @@ class Person(models.Model):
         ('P', 'Perempuan')
     )
 
-    SHIRT_SIZE = (
-        ('s', 'S'),
-        ('m', 'M'),
-        ('l', 'L'),
-        ('xl', 'XL'),
-        ('xxl', 'XXL'),
-        ('xxxl', 'XXXL')
-    )
-
     name = models.CharField(max_length=100)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='persons')
     type = models.CharField(max_length=11, choices=PERSON_TYPE)
@@ -270,7 +260,6 @@ class Person(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER)
     phone = models.CharField(max_length=15)
     email = models.EmailField()
-    shirt_size = models.CharField(max_length=4, choices=SHIRT_SIZE)
     photo = models.ImageField(upload_to=person_image_directory, blank=True)
     objects = PersonManager()
 

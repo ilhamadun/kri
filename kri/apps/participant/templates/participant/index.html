@@ -97,7 +97,6 @@
                             <div class="col-xs-8">Nama tim:</div>
                             <div class="col-xs-4">{{ teams.krpai.name|default:'-' }}</div>
                         </div>
-                        {% if teams.krpai %}
                         <div class="row">
                             <div class="col-xs-8">Tim Inti:</div>
                             <div class="col-xs-4">{% if teams.krpai %}{{ teams.krpai.core_member.count }} / {{ teams.krpai.max_core_member }}{% else %} - {% endif %}</div>
@@ -110,7 +109,6 @@
                             <div class="col-xs-8">Dosen Pembimbing:</div>
                             <div class="col-xs-4">{% if teams.krpai %}{{ teams.krpai.adviser.count }} / {{ teams.krpai.max_adviser }}{% else %} - {% endif %}</div>
                         </div>
-                        {% endif %}
                     </div>
                 </div>
                 {% endif %}

@@ -22,10 +22,8 @@ class TeamForm(ModelForm):
 
     class Meta:
         model = Team
-        fields = ['name', 'arrival_time', 'transport', 'photo']
-        widgets = {
-            'photo': FileInput()
-        }
+        fields = ['name', 'arrival_time', 'transport']
+
 
 class PersonForm(ModelForm):
     """Person model Form for registration"""
@@ -36,7 +34,7 @@ class PersonForm(ModelForm):
     class Meta:
         model = Person
         fields = ['name', 'type', 'instance_id', 'birthday', 'gender', 'phone',
-                  'email', 'shirt_size', 'photo']
+                  'email', 'photo']
         widgets = {
             'type': HiddenInput(),
             'photo': FileInput()

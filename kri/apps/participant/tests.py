@@ -119,8 +119,7 @@ class PersonTestCase(TestCase):
             birthday=datetime.datetime.now(),
             gender='L',
             phone='081234567890',
-            email='email@test.com',
-            shirt_size='l'
+            email='email@test.com'
         )
 
     def setUp(self):
