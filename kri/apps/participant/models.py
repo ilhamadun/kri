@@ -13,9 +13,9 @@ from django.contrib.auth.models import User
 
 
 class University(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     abbreviation = models.CharField(max_length=10, null=True)
-    user = models.OneToOneField(User, models.CASCADE)
+    user = models.OneToOneField(User, models.CASCADE, blank=True, null=True)
     krai = models.BooleanField(default=False)
     krsbi_beroda = models.BooleanField(default=False)
     krsti = models.BooleanField(default=False)
@@ -63,6 +63,15 @@ class University(models.Model):
 
     class Meta:
         verbose_name_plural = 'Universities'
+
+
+class Manager(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone = models.CharField(max_length=15)
+    requested_university = models.ForeignKey(University, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
 
 
 class TeamManager(models.Manager):
