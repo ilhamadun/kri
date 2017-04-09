@@ -12,7 +12,7 @@ class RegistrationForm(ModelForm):
 class ManagerForm(ModelForm):
     class Meta:
         model = Manager
-        fields = ['phone']
+        fields = ['phone', 'requested_university']
 
 class TeamForm(ModelForm):
     """Team model Form for registration"""

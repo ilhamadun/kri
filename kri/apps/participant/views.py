@@ -27,7 +27,7 @@ def login(request):
                 Manager.objects.create(
                     user=user,
                     phone=request.POST['phone'],
-                    requested_university=University.objects.get(pk=request.POST['university']))
+                    requested_university=University.objects.get(pk=request.POST['requested_university']))
 
                 messages.success(request, "Pendaftaran Anda sedang diverifikasi oleh panitia. Selanjutnya Anda akan dihubungi oleh LO.")
 

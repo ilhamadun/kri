@@ -87,7 +87,7 @@ li {
                         <input type="text" name="phone" required aria-required="true" placeholder="Nomor Telepon">
                     </div>
                     <div class="form-group">
-                        <select name="university" required aria-required="true" placeholder="Universitas">
+                        <select name="requested_university" required aria-required="true" placeholder="Universitas">
                             <option>Pilih Universitas</option>
                             {% for u in university %}
                             <option value="{{ u.id }}">{{ u.name }}</option>
@@ -116,7 +116,7 @@ li {
                 </h5>
                 {% if form.errors %}
                 <div class="alert alert-warning">
-                    Username dan password tidak cocok.
+                    Username dan password tidak cocok atau akun anda belum diverifikasi.
                 </div>
                 {% endif %}
                 <form action="{% url 'participant:login' %}" method="post" class="form-login disable-ajax-form" novalidate>
