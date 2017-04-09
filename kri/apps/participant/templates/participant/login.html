@@ -13,6 +13,19 @@
     margin: 40px 0 100px;
 }
 
+.form-group {
+    margin-bottom: 0;
+}
+
+ul {
+    list-style: circle inside;
+}
+
+li {
+    list-style: circle inside;
+    margin: 0;
+}
+
 @media (min-width: 768px) {
     .form-login .action {
         margin-top: 15px;
@@ -39,14 +52,68 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+        <div class="col-md-12 col-lg-8 col-lg-offset-2">
+            <div class="alert alert-info">
+                <p><strong>Ketentuan Pendaftaran</strong></p>
+                <ul>
+                    <li>Masing-masing Universitas mendaftarkan satu akun.</li>
+                    <li>Anda dapat login setelah akun diverifikasi oleh panitia.</li>
+                    <li>Jika Anda mengalami kesulitan, silahkan hubungi <a href="mailto:kri2017@ugm.ac.id">kri2017@ugm.ac.id</a></li>
+                </ul>
+            </div>
+            {% include 'message.html' %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-lg-4 col-lg-offset-2">
+            <div class="form-box">
+                <h5 class="align-center" style="margin-bottom: 25px;">
+                    <span class="highlight">Daftar</span>
+                </h5>
+                {% if register_error %}
+                <div class="alert alert-warning">
+                    Ada kesalahan dalam formulir pendaftaran Anda.
+                </div>
+                {% endif %}
+                <form action="{% url 'participant:login' %}" method="POST" class="form-login disable-ajax-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" name="username" required aria-required="true" placeholder="Username" autofocus>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" required aria-required="true" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="phone" required aria-required="true" placeholder="Nomor Telepon">
+                    </div>
+                    <div class="form-group">
+                        <select name="university" required aria-required="true" placeholder="Universitas">
+                            <option>Pilih Universitas</option>
+                            {% for u in university %}
+                            <option value="{{ u.id }}">{{ u.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" required aria-required="true" placeholder="Password">
+                    </div>
+                    <div class="row action">
+                        <div class="col-sm-6 password-reset">
+                            {% comment %}<a href="{% url 'password_reset' %}">Lupa Password?</a>{% endcomment %}
+                        </div>
+                        <div class="col-sm-6 align-right">
+                            <button class="btn" type="submit" name="action" value="register">Daftar</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
             <div class="form-box">
                 <h5 class="align-center" style="margin-bottom: 25px;">
                     <span class="highlight">Login</span>
                 </h5>
-                <div class="alert alert-info">
-                    Username dan password akan diinformasikan oleh LO.
-                </div>
                 {% if form.errors %}
                 <div class="alert alert-warning">
                     Username dan password tidak cocok.
@@ -54,18 +121,18 @@
                 {% endif %}
                 <form action="{% url 'participant:login' %}" method="post" class="form-login disable-ajax-form" novalidate>
                     {% csrf_token %}
-                    <fieldset>
+                    <div class="form-group">
                         <input type="text" name="username" required aria-required="true" placeholder="Username" autofocus>
-                    </fieldset>
-                    <fieldset>
+                    </div>
+                    <div class="form-group">
                         <input type="password" name="password" required aria-required="true" placeholder="Password">
-                    </fieldset>
+                    </div>
                     <div class="row action">
                         <div class="col-sm-6 password-reset">
                             {% comment %}<a href="{% url 'password_reset' %}">Lupa Password?</a>{% endcomment %}
                         </div>
                         <div class="col-sm-6 align-right">
-                            <input type="submit" value="Login" class="btn"/>
+                            <button class="btn" type="submit" name="action" value="login">Login</button>
                         </div>
                     </div>
                     <input type="hidden" name="next" value="{{ next }}" />

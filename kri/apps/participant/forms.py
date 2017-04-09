@@ -1,6 +1,18 @@
 from django.forms import ModelForm, HiddenInput, DateInput, DateTimeField, FileInput
-from .models import Team, Person
+from django.contrib.auth.models import User
+from .models import Team, Person, Manager
 
+
+class RegistrationForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password']
+
+
+class ManagerForm(ModelForm):
+    class Meta:
+        model = Manager
+        fields = ['phone']
 
 class TeamForm(ModelForm):
     """Team model Form for registration"""

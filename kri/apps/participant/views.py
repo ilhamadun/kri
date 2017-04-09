@@ -2,9 +2,46 @@ from django.http import JsonResponse, Http404
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import login as auth_login
+from django.contrib.auth.models import User
 from .decorators import has_access
-from .forms import TeamForm, PersonForm
-from .models import Team, Person
+from .forms import RegistrationForm, ManagerForm, TeamForm, PersonForm
+from .models import Team, Person, University, Manager
+
+
+def login(request):
+    context = {
+        'university': University.objects.filter(user=None)
+    }
+
+    if request.method == 'POST':
+        if request.POST['action'] == 'register':
+            form_registration = RegistrationForm(request.POST)
+            form_manager = ManagerForm(request.POST)
+            if form_registration.is_valid() and form_manager.is_valid():
+                user = User.objects.create_user(request.POST['username'], request.POST['email'],
+                                                request.POST['password'])
+                user.is_active = False
+                user.save()
+
+                Manager.objects.create(
+                    user=user,
+                    phone=request.POST['phone'],
+                    requested_university=University.objects.get(pk=request.POST['university']))
+
+                messages.success(request, "Pendaftaran Anda sedang diverifikasi oleh panitia. Selanjutnya Anda akan dihubungi oleh LO.")
+
+            else:
+                context['register_error'] = True
+
+        elif request.POST['action'] == 'login':
+            return auth_login(request, template_name='participant/login.html')
+
+
+    if request.GET.get('next', False):
+        context['next'] = request.GET['next']
+
+    return render(request, 'participant/login.html', context)
 
 
 @login_required
