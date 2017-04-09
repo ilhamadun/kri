@@ -54,6 +54,7 @@ def index(request):
             teams[t[0]] = None
 
     return render(request, 'participant/index.html', {
+        'app': 'participant',
         'has_access': request.user.university.all_access(),
         'teams': teams,
     })
@@ -126,6 +127,7 @@ def division(request, **kwargs):
                 members[m.type].append(m)
 
     return render(request, 'participant/division.html', {
+        'app': 'participant',
         'active': kwargs['division'],
         'title': kwargs['title'],
         'has_access': request.user.university.all_access(),

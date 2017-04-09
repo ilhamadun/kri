@@ -34,7 +34,13 @@
 </ul>
 
 {% if user.is_authenticated %}
+{% if user.is_staff %}
+<a href="/ksk" class="pull-right buy-btn">Sekretariat</a>
+{% elif app == 'participant' %}
+<a href="{% url 'participant:logout' %}" class="pull-right buy-btn">Logout</a>
+{% else %}
 <a href="{% url 'participant:index' %}" class="pull-right buy-btn">Peserta</a>
+{% endif %}
 {% else %}
 <a href="{% url 'participant:login' %}" class="pull-right buy-btn">Pendaftaran</a>
 {% endif %}
