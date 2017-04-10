@@ -76,10 +76,16 @@ li {
                     Ada kesalahan dalam formulir pendaftaran Anda.
                 </div>
                 {% endif %}
-                <form action="{% url 'participant:login' %}" method="POST" class="form-login disable-ajax-form">
+                <form action="{% url 'participant:login' %}" method="POST" enctype="multipart/form-data" class="form-login disable-ajax-form">
                     {% csrf_token %}
                     <div class="form-group">
                         <input type="text" name="username" required aria-required="true" placeholder="Username" autofocus>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" required aria-required="true" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="name" required aria-required="true" placeholder="Nama Lengkap" autofocus>
                     </div>
                     <div class="form-group">
                         <input type="email" name="email" required aria-required="true" placeholder="Email">
@@ -95,8 +101,9 @@ li {
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="form-group">
-                        <input type="password" name="password" required aria-required="true" placeholder="Password">
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label for="photo" class="person-photo-label">Scan/Foto Kartu Mahasiswa</label>
+                        <input type="file" required aria-required="true" name="student_card">
                     </div>
                     <div class="row action">
                         <div class="col-sm-6 password-reset">

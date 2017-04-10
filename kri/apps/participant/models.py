@@ -65,10 +65,18 @@ class University(models.Model):
         verbose_name_plural = 'Universities'
 
 
+def manager_image_directory(instance, filename):
+    """Generate a unique image upload path for each manager"""
+    salt = hashlib.sha1(str(random.random()).encode('utf8')).hexdigest()[:5]
+    return 'manager/{0}/{1}'.format(instance.requested_university.id, salt + '_' + filename)
+
+
 class Manager(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, default='')
     phone = models.CharField(max_length=15)
     requested_university = models.ForeignKey(University, on_delete=models.CASCADE)
+    student_card = models.ImageField(upload_to=manager_image_directory, null=True, default=None)
 
     def __str__(self):
         return self.user.username

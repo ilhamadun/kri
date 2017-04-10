@@ -12,7 +12,7 @@ class RegistrationForm(ModelForm):
 class ManagerForm(ModelForm):
     class Meta:
         model = Manager
-        fields = ['phone', 'requested_university']
+        fields = ['name', 'phone', 'requested_university', 'student_card']
 
 class TeamForm(ModelForm):
     """Team model Form for registration"""
@@ -28,7 +28,7 @@ class TeamForm(ModelForm):
 class PersonForm(ModelForm):
     """Person model Form for registration"""
     birthday = DateTimeField(
-        widget=DateInput(format='%d/%m/%Y',attrs={'class': 'form-control birthday'}),
+        widget=DateInput(format='%d/%m/%Y', attrs={'class': 'form-control birthday'}),
         input_formats=['%d/%m/%Y'])
 
     class Meta:

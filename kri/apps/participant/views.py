@@ -17,17 +17,16 @@ def login(request):
     if request.method == 'POST':
         if request.POST['action'] == 'register':
             form_registration = RegistrationForm(request.POST)
-            form_manager = ManagerForm(request.POST)
+            form_manager = ManagerForm(request.POST, request.FILES)
             if form_registration.is_valid() and form_manager.is_valid():
                 user = User.objects.create_user(request.POST['username'], request.POST['email'],
                                                 request.POST['password'])
                 user.is_active = False
                 user.save()
 
-                Manager.objects.create(
-                    user=user,
-                    phone=request.POST['phone'],
-                    requested_university=University.objects.get(pk=request.POST['requested_university']))
+                manager = form_manager.save(commit=False)
+                manager.user = user
+                manager.save()
 
                 messages.success(request, "Pendaftaran Anda sedang diverifikasi oleh panitia. Selanjutnya Anda akan dihubungi oleh LO.")
 
