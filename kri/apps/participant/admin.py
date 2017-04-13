@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.core import urlresolvers
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 from .models import University, Manager, Team, Person
 
 @admin.register(University)
@@ -23,6 +24,7 @@ class UniversityAdmin(admin.ModelAdmin):
 @admin.register(Manager)
 class ManagerAdmin(admin.ModelAdmin):
     list_display = ('user', 'name', 'phone', 'email', 'link_to_university', 'verified', 'active')
+    readonly_fields = ('email', 'verified', 'active')
     search_fields = ('user__username', 'name', 'requested_university__name',
                      'requested_university__abbreviation')
 
@@ -53,13 +55,34 @@ class ManagerAdmin(admin.ModelAdmin):
     link_to_university.short_description = 'Universitas'
 
 
-
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
     list_display = ('name', 'university', 'division', 'core_member_count', 'mechanics_count',
                     'adviser_count', 'is_complete')
     list_filter = ('university', 'division')
+    readonly_fields = ('core_member', 'mechanics', 'adviser')
     search_fields = ('name', 'university__name', 'university__abbreviation')
+
+    def core_member(self, obj):
+        return self.create_person_link(obj.core_member())
+
+    def mechanics(self, obj):
+        return self.create_person_link(obj.mechanics())
+
+    def adviser(self, obj):
+        return self.create_person_link(obj.adviser())
+
+    def create_person_link(self, persons):
+        text = '<br/><ol>'
+        for m in persons:
+            link = urlresolvers.reverse('admin:participant_person_change',
+                                        args=[m.id])
+            text = text + format_html('<li><a href="{}">{}</a> ({})</li>', link, m.name,
+                                      'Lengkap' if m.is_complete() else 'Belum Lengkap')
+
+        text = text + '</ol>'
+
+        return mark_safe(text)
 
     def core_member_count(self, obj):
         """Returns the team's core member count"""
