@@ -61,6 +61,20 @@ class University(models.Model):
     def __str__(self):
         return self.name
 
+    def is_complete(self):
+        """Check if university data is complete, including team and person data"""
+        if not len(self.all_access()) == self.teams.count():
+            return False
+
+        for t in self.teams.all():
+            if not t.is_complete():
+                return False
+
+        return True
+
+    is_complete.boolean = True
+    is_complete.short_description = 'Complete'
+
     class Meta:
         verbose_name_plural = 'Universities'
 
@@ -200,6 +214,23 @@ class Team(models.Model):
     def __str__(self):
         return self.name + ' - ' + self.university.name
 
+    def is_complete(self):
+        """Check if team data is complete, including person data"""
+        if not self.name and self.arrival_time and self.transport:
+            return False
+
+        if not (self.core_member() and self.mechanics() and self.adviser()):
+            return False
+
+        for m in self.persons.all():
+            if not m.is_complete():
+                return False
+
+        return True
+
+    is_complete.boolean = True
+    is_complete.short_description = 'Complete'
+
     @staticmethod
     def division_type_display(key):
         """Returns display value from TEAM_DIVISION"""
@@ -273,6 +304,16 @@ class Person(models.Model):
 
     def __str__(self):
         return self.name
+
+    def is_complete(self):
+        """Check if person data is complete"""
+        if self.photo:
+            return True
+        else:
+            return False
+
+    is_complete.boolean = True
+    is_complete.short_description = 'Complete'
 
     @staticmethod
     def person_type_display(key):
