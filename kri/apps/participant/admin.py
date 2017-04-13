@@ -19,6 +19,7 @@ class UniversityAdmin(admin.ModelAdmin):
             return None
 
     link_to_manager.short_description = 'Manager'
+    link_to_manager.admin_order_field = 'user__manager__name'
 
 
 @admin.register(Manager)
@@ -95,6 +96,10 @@ class TeamAdmin(admin.ModelAdmin):
     def adviser_count(self, obj):
         """Returns the team's adviser count"""
         return obj.adviser().count()
+
+    core_member_count.short_description = 'Core Member'
+    mechanics_count.short_description = 'Mechanics'
+    adviser_count.short_description = 'Adviser'
 
 
 @admin.register(Person)
