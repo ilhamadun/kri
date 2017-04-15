@@ -63,12 +63,7 @@ class University(models.Model):
 
     def is_complete(self):
         """Check if university data is complete, including team and person data"""
-        max_team = 0
-        for access in self.all_access():
-            if access:
-                max_team = max_team + 1
-
-        if not max_team == self.teams.count():
+        if list(self.all_access().values()).count(True) != self.teams.count():
             return False
 
         for t in self.teams.all():
