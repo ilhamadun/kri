@@ -173,7 +173,7 @@ class Team(models.Model):
         ('krpai', 'KRPAI')
     )
 
-    MAX_CORE_MEMBER = {'krai': 3, 'krsbi_beroda': 3, 'krsti': 3, 'krpai': 2}
+    MAX_CORE_MEMBER = {'krai': 3, 'krsbi_beroda': 4, 'krsti': 3, 'krpai': 2}
     MAX_MECHANIC = {'krai': 3, 'krsbi_beroda': 1, 'krsti': 1, 'krpai': 1}
 
     name = models.CharField(max_length=100, null=True)
