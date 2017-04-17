@@ -219,7 +219,7 @@ class Team(models.Model):
         if not self.name and self.arrival_time and self.transport:
             return False
 
-        if not (self.core_member() and self.mechanics() and self.adviser()):
+        if not (self.core_member() and self.adviser()):
             return False
 
         for m in self.persons.all():
