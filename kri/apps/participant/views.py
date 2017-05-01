@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import login as auth_login
 from django.contrib.auth.models import User
 from .decorators import has_access
-from .forms import RegistrationForm, ManagerForm, TeamForm, PersonForm
-from .models import Team, Person, University, Manager
+from .forms import RegistrationForm, ManagerForm, TeamForm, PersonForm, SupporterForm
+from .models import Team, Person, University, Manager, Supporter
 
 
 def login(request):
@@ -228,3 +228,69 @@ def render_person_form(request, person_type):
             'status': 'error',
             'message': Person.person_type_display(person_type) + ' sudah penuh.'
         })
+
+
+@login_required
+def supporter(request):
+    if request.method == 'POST':
+        form = SupporterForm(request.POST)
+        ticket = Supporter.order(form, request.user)
+
+        if ticket is None:
+            messages.error(
+                request,
+                'Pembelian Anda gagal karena melebihi kuota. Silahkan kurangi jumlah tiket.'
+            )
+
+    else:
+        form = SupporterForm()
+
+    ticket_left = Supporter.tickets_left()
+    if ticket_left > 0:
+        can_order = True
+        ticket_ordered = Supporter.ticket_ordered(request.user)
+        messages.info(
+            request,
+            'Harga tiket Rp. 25.000. Anda telah membeli {0} dari maksimal {1} tiket.'.format(
+                ticket_ordered, Supporter.max_supporter(request.user.university)))
+
+        ticket_left = Supporter.tickets_left(request.user)
+        if ticket_left <= 0:
+            can_order = False
+
+    else:
+        can_order = False
+        messages.error(request, 'Tiket supporter telah habis.')
+
+    if Supporter.ticket_ordered(request.user) > 0:
+        price_due = Supporter.price_due(request.user)
+        if price_due > 0:
+            messages.error(
+                request,
+                ('Anda belum membayar {0} tiket sebesar Rp. {1}. '
+                 'Silahkan transfer ke rekening Bank BCA 0373784513 a/n Falanas Farhan '
+                 'maksimal 24 jam sejak pembelian. '
+                 'Konfirmasi pembayaran dengan mengirim bukti transfer ke '
+                 'kri2017@ugm.ac.id.').format(int(price_due/25000), price_due))
+        else:
+            messages.success(
+                request,
+                ('Tiket Anda sudah dibayar.'
+                 'Tiket dapat ditukar saat pendaftaran ulang dengan menunjukkan '
+                 'kartu mahasiswa Anda ({}).').format(request.user.manager.name)
+            )
+    else:
+        messages.warning(
+            request,
+            'Pembayaran dilakukan dengan transfer ke rekening Bank BCA dalam waktu 24 jam.'
+        )
+
+
+    return render(request, 'participant/ticket-buy.html', {
+        'app': 'participant',
+        'active': 'supporter',
+        'title': 'Supporter',
+        'can_order': can_order,
+        'form': form,
+        'ticket_left': ticket_left
+    })

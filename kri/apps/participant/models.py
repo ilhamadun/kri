@@ -5,11 +5,13 @@ Each University has multiple Team and each Team has multiple Person.
 
 """
 
+import datetime
 import hashlib
 import random
 from django.db import models, IntegrityError
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 class University(models.Model):
@@ -323,3 +325,118 @@ class Person(models.Model):
                 return p[1]
 
         return None
+
+
+class Supporter(models.Model):
+    MAX_TICKET = 600
+    MAX_SUPPORTER = 40
+    PRICE = 25000
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='supporter')
+    amount = models.IntegerField()
+    price = models.IntegerField()
+    order_time = models.DateTimeField(auto_now_add=True)
+    verification_time = models.DateTimeField(null=True)
+    verified_time = models.DateTimeField(null=True)
+
+    def is_obselete(self):
+        """Check if an order is obselete
+        
+        Every order is obselete in 24 hours.
+        """
+        delta = timezone.now() - self.order_time
+
+        if delta.days >= 1:
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def max_supporter(university):
+        """Get maximum supporter for a university"""
+        if university.name == 'Universitas Gadjah Mada':
+            supporter = 100
+        else:
+            supporter = Supporter.MAX_SUPPORTER
+
+        return supporter
+
+    @staticmethod
+    def tickets_left(user=None):
+        """Get ticket left for all or for a user
+
+        Args:
+            - user: user to check
+
+        """
+        now = timezone.now()
+        yesterday = now - datetime.timedelta(1)
+
+        tickets = Supporter.objects.filter(
+            models.Q(verified_time__isnull=False) |
+            # models.Q(verification_time__isnull=False) |
+            models.Q(order_time__gte=yesterday)
+        )
+
+        if user:
+            global_ticket_sum = tickets.aggregate(models.Sum('amount'))['amount__sum']
+
+            tickets = tickets.filter(user=user)
+            max_supporter = Supporter.max_supporter(user.university)
+
+            if global_ticket_sum is not None:
+                global_ticket_left = Supporter.MAX_TICKET - global_ticket_sum
+
+                if max_supporter >= global_ticket_left:
+                    return global_ticket_left
+        else:
+            max_supporter = Supporter.MAX_TICKET
+
+        tickets = tickets.aggregate(models.Sum('amount'))
+
+        if tickets['amount__sum'] is None:
+            return max_supporter
+        else:
+            return max_supporter - tickets['amount__sum']
+
+    @staticmethod
+    def order(form, user):
+        """Order tickets for user from SupporterForm
+        
+        Args:
+            - form: instance of SupporterForm
+            - user: order's user
+
+        Return:
+            The ticket, if order is succeed, or None if it failed
+
+        """
+        tickets_left = Supporter.tickets_left(user)
+        if form.is_valid() and int(form.data['amount']) <= tickets_left:
+            ticket = form.save(commit=False)
+            ticket.user = user
+            ticket.price = int(form.cleaned_data['amount']) * Supporter.PRICE
+            ticket.save()
+
+            return ticket
+        else:
+            return None
+
+    @staticmethod
+    def price_due(user):
+        """Count price due for a user"""
+        now = timezone.now()
+        yesterday = now - datetime.timedelta(1)
+        orders = Supporter.objects.filter(user=user).filter(order_time__gte=yesterday)
+        price = 0
+        for order in orders:
+            if not order.verified_time:
+                price = price + order.price
+
+        return price
+
+    @staticmethod
+    def ticket_ordered(user):
+        """Count number of ticket ordered for a user"""
+        return Supporter.max_supporter(user.university) - Supporter.tickets_left(user)
+ 

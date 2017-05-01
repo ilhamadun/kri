@@ -7,15 +7,18 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.test import TestCase
-from . import models
+from django.utils import timezone
+from . import forms, models
 
 
 class UniversityTestCase(TestCase):
     """Test cases for University model"""
     @staticmethod
-    def mock_university():
+    def mock_university(username=None):
         """Create a University instance for testing purpose"""
-        username = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(5)])
+        if username is None:
+            username = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(5)])
+
         return models.University.objects.create(
             name='Universitas ' + username,
             abbreviation='UGM',
@@ -169,3 +172,126 @@ class PersonTestCase(TestCase):
 
         self.assertEqual(error.exception.args[0],
                          'Dosen Pembimbing tim KRPAI sudah penuh.')
+
+
+class SupporterTestCase(TestCase):
+    def test_max_supporter(self):
+        """Test maximum supporter counting"""
+        university = UniversityTestCase.mock_university()
+        ugm = UniversityTestCase.mock_university('Gadjah Mada')
+        max_supporter = models.Supporter.max_supporter(university)
+        ugm_max_supporter = models.Supporter.max_supporter(ugm)
+
+        self.assertEqual(max_supporter, 40)
+        self.assertEqual(ugm_max_supporter, 100)
+
+    def test_order(self):
+        """Test create an order for a user"""
+        form = forms.SupporterForm({'amount': 30})
+        university = UniversityTestCase.mock_university()
+        ticket = models.Supporter.order(form, university.user)
+
+        self.assertEqual(ticket.amount, 30)
+        self.assertEqual(models.Supporter.tickets_left(university.user), 10)
+
+    def test_order_ugm(self):
+        """Test create an order for UGM"""
+        form = forms.SupporterForm({'amount': 90})
+        university = UniversityTestCase.mock_university('Gadjah Mada')
+        ticket = models.Supporter.order(form, university.user)
+
+        self.assertEqual(ticket.amount, 90)
+        self.assertEqual(models.Supporter.tickets_left(university.user), 10)
+
+    def test_obselete(self):
+        """Test obselete ticket"""
+        form = forms.SupporterForm({'amount': 30})
+        university = UniversityTestCase.mock_university()
+        ticket = models.Supporter.order(form, university.user)
+        ticket.order_time = datetime.datetime(2017, 4, 30, tzinfo=timezone.get_default_timezone())
+        ticket.save()
+
+        self.assertTrue(ticket.is_obselete())
+
+    def test_global_ticket_left(self):
+        """Test couting global ticket left"""
+        self.assertEqual(models.Supporter.tickets_left(), models.Supporter.MAX_TICKET)
+
+        form = forms.SupporterForm({'amount': 90})
+        university = UniversityTestCase.mock_university('Gadjah Mada')
+        ticket = models.Supporter.order(form, university.user)
+
+        # form = forms.SupporterForm({'amount': 40})
+        # university = UniversityTestCase.mock_university('asd')
+        # ticket = models.Supporter.order(form, university.user)
+        # ticket.order_time = ticket.order_time - datetime.timedelta(2)
+        # ticket.verification_time = timezone.now()
+        # ticket.save()
+
+        form = forms.SupporterForm({'amount': 30})
+        university = UniversityTestCase.mock_university('fgh')
+        ticket = models.Supporter.order(form, university.user)
+        ticket.order_time = ticket.order_time - datetime.timedelta(2)
+        # ticket.verification_time = timezone.now()
+        ticket.verified_time = timezone.now()
+        ticket.save()
+
+        self.assertEqual(models.Supporter.tickets_left(), models.Supporter.MAX_TICKET - 120)
+
+    def test_user_ticket_left(self):
+        """Test counting user ticket left"""
+        form = forms.SupporterForm({'amount': 30})
+        university = UniversityTestCase.mock_university()
+        ticket = models.Supporter.order(form, university.user)
+
+        self.assertEqual(models.Supporter.tickets_left(university.user), 10)
+
+    def test_user_ticket_left_overriden_by_global(self):
+        """Test counting user ticket left when global ticket is running out"""
+        university = UniversityTestCase.mock_university()
+        ticket = models.Supporter.objects.create(
+            user=university.user, amount=models.Supporter.MAX_TICKET - 10, price=0)
+
+        university = UniversityTestCase.mock_university()
+
+        self.assertEqual(models.Supporter.tickets_left(), 10)
+        self.assertEqual(models.Supporter.tickets_left(university.user), 10)
+
+    def test_global_over_book(self):
+        """Test global over book prevention system"""
+        form = forms.SupporterForm({'amount': 90})
+        university = UniversityTestCase.mock_university()
+        ticket = models.Supporter.order(form, university.user)
+
+        self.assertEqual(ticket, None)
+
+    def test_user_over_book(self):
+        """Test user over book prevention system"""
+        university = UniversityTestCase.mock_university()
+        form = forms.SupporterForm({'amount': 30})
+        ticket = models.Supporter.order(form, university.user)
+
+        form = forms.SupporterForm({'amount': 20})
+        ticket = models.Supporter.order(form, university.user)
+
+        self.assertEqual(models.Supporter.objects.all().count(), 1)
+
+    def test_price(self):
+        """Test price counting"""
+        university = UniversityTestCase.mock_university()
+        form = forms.SupporterForm({'amount': 10})
+        ticket = models.Supporter.order(form, university.user)
+
+        form = forms.SupporterForm({'amount': 20})
+        ticket = models.Supporter.order(form, university.user)
+
+        self.assertEqual(models.Supporter.price_due(university.user), 750000)
+
+    def test_ticket_ordered(self):
+        """Test ordered ticket counting"""
+        university = UniversityTestCase.mock_university()
+        form = forms.SupporterForm({'amount': 10})
+        ticket = models.Supporter.order(form, university.user)
+
+        self.assertEqual(models.Supporter.ticket_ordered(university.user), 10)
+

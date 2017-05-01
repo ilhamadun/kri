@@ -21,4 +21,6 @@ urlpatterns = [
 
     url(r'^person/(?P<person_type>[\w-]+)/$', views.person, name='person'),
 
+    url(r'^tiket/$', views.supporter, name='supporter'),
+
 ] + authurls

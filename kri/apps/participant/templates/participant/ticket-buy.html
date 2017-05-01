@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'header.html' %}
+
+<div class="section-peserta container">
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3" style="margin-bottom: 50px;">
+            <h5 style="margin-top: 30px; margin-bottom: 20px;">
+                <span class="highlight">Beli Tiket Supporter</span>
+            </h5>
+            {% include 'message.html' %}
+            {% if can_order %}
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-8">
+                        <input type="number" name="amount" min="0" max="{{ ticket_left }}" placeholder="Jumlah Tiket">
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="submit" class="btn btn-sm btn-block">Beli</button>
+                    </div>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
