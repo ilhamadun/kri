@@ -1,6 +1,6 @@
 from django.forms import ModelForm, HiddenInput, DateInput, DateTimeField, FileInput
 from django.contrib.auth.models import User
-from .models import Team, Person, Manager
+from .models import Team, Person, Manager, Supporter
 
 
 class RegistrationForm(ModelForm):
@@ -39,3 +39,8 @@ class PersonForm(ModelForm):
             'type': HiddenInput(),
             'photo': FileInput()
         }
+
+class SupporterForm(ModelForm):
+    class Meta:
+        model = Supporter
+        fields = ['amount']

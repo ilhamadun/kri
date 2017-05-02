@@ -54,11 +54,11 @@ li {
     <div class="row">
         <div class="col-md-12 col-lg-8 col-lg-offset-2">
             <div class="alert alert-info">
-                <p><strong>Ketentuan Pendaftaran</strong></p>
+                <p><strong>Pembelian Tiket Supporter</strong></p>
                 <ul>
-                    <li>Periode pendaftaran 10-16 April 2017.</li>
-                    <li>Masing-masing Universitas mendaftarkan satu akun.</li>
-                    <li>Anda dapat login setelah akun diverifikasi oleh panitia.</li>
+                    <li>Harga tiket Rp. 25.000,-.</li>
+                    <li>Tiket supporter dapat dibeli dengan akun Universitas yang telah terdaftar.</li>
+                    <li>Penonton lain dapat membeli tiket On The Spot.</li>
                     <li>Jika Anda mengalami kesulitan, silahkan hubungi <a href="mailto:kri2017@ugm.ac.id">kri2017@ugm.ac.id</a></li>
                 </ul>
             </div>
@@ -66,58 +66,7 @@ li {
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6 col-lg-4 col-lg-offset-2">
-            <div class="form-box">
-                <h5 class="align-center" style="margin-bottom: 25px;">
-                    <span class="highlight">Daftar</span>
-                </h5>
-                {% if register_error %}
-                <div class="alert alert-warning">
-                    Ada kesalahan dalam formulir pendaftaran Anda.
-                </div>
-                {% endif %}
-                <form action="{% url 'participant:login' %}" method="POST" enctype="multipart/form-data" class="form-login disable-ajax-form">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <input type="text" name="username" required aria-required="true" placeholder="Username" autofocus>
-                    </div>
-                    <div class="form-group">
-                        <input type="password" name="password" required aria-required="true" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" name="name" required aria-required="true" placeholder="Nama Lengkap" autofocus>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" name="email" required aria-required="true" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" name="phone" required aria-required="true" placeholder="Nomor Telepon">
-                    </div>
-                    <div class="form-group">
-                        <select name="requested_university" required aria-required="true" placeholder="Universitas">
-                            <option>Pilih Universitas</option>
-                            {% for u in university %}
-                            <option value="{{ u.id }}">{{ u.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label for="photo" class="person-photo-label">Scan/Foto Kartu Mahasiswa</label>
-                        <input type="file" required aria-required="true" name="student_card">
-                    </div>
-                    <div class="row action">
-                        <div class="col-sm-6 password-reset">
-                            {% comment %}<a href="{% url 'password_reset' %}">Lupa Password?</a>{% endcomment %}
-                        </div>
-                        <div class="col-sm-6 align-right">
-                            <button class="btn" type="submit" name="action" value="register">Daftar</button>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-6 col-lg-4 col-md-offset-3 col-lg-offset-4">
             <div class="form-box">
                 <h5 class="align-center" style="margin-bottom: 25px;">
                     <span class="highlight">Login</span>
