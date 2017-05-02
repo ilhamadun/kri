@@ -275,9 +275,9 @@ def supporter(request):
         else:
             messages.success(
                 request,
-                ('Tiket Anda sudah dibayar.'
+                ('Tiket Anda sudah dibayar. '
                  'Tiket dapat ditukar saat pendaftaran ulang dengan menunjukkan '
-                 'kartu mahasiswa Anda ({}).').format(request.user.manager.name)
+                 'kartu mahasiswa Anda ({0}).').format(request.user.manager.name)
             )
     else:
         messages.warning(
