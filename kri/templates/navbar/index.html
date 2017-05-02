@@ -39,8 +39,8 @@
 {% elif app == 'participant' %}
 <a href="{% url 'participant:logout' %}" class="pull-right buy-btn">Logout</a>
 {% else %}
-<a href="{% url 'participant:index' %}" class="pull-right buy-btn">Peserta</a>
+<a href="{% url 'participant:index' %}" class="pull-right buy-btn">Tiket</a>
 {% endif %}
 {% else %}
-<a href="{% url 'participant:login' %}" class="pull-right buy-btn">Pendaftaran</a>
+<a href="{% url 'participant:index' %}" class="pull-right buy-btn">Tiket</a>
 {% endif %}

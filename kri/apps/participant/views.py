@@ -45,6 +45,8 @@ def login(request):
 
 @login_required
 def index(request):
+    return redirect('participant:supporter')
+
     teams = {}
     for t in Team.TEAM_DIVISION:
         try:
@@ -86,6 +88,8 @@ def krpai(request):
 
 def division(request, **kwargs):
     """Handle request for Team creation"""
+    return redirect('participant:supporter')
+
     try:
         instance = request.user.university.team(kwargs['division'])
     except Team.DoesNotExist:
