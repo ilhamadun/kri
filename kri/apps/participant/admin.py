@@ -125,13 +125,17 @@ class PersonAdmin(admin.ModelAdmin):
 
 @admin.register(Supporter)
 class SupporterAdmin(admin.ModelAdmin):
-    list_display = ('university', 'amount', 'price', 'is_active', 'order_time',
+    list_display = ('university', 'manager', 'amount', 'price', 'is_active', 'order_time',
                     'verification_button')
     search_fields = ('user__university__name', 'user__university__abbreviation')
 
     def university(self, obj):
         """Return university name"""
         return obj.user.university.name
+
+    def manager(self, obj):
+        """Returns manager name"""
+        return obj.user.manager.name
 
     def is_active(self, obj):
         """Return whether ticket order is active or not"""
