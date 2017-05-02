@@ -1,5 +1,5 @@
 from django.http import JsonResponse, Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import login as auth_login
@@ -294,3 +294,16 @@ def supporter(request):
         'form': form,
         'ticket_left': ticket_left
     })
+
+
+@login_required
+def verify_supporter(request, ticket_id):
+    """Verify ticket order given it's id"""
+    if not request.user.has_perm('participant.change_supporter'):
+        raise Http404
+
+    Supporter.verify(ticket_id)
+
+    messages.success(request, 'Tiket #{0} telah diverifikasi'.format(ticket_id))
+
+    return redirect(request.GET.get('next', '/ksk'))

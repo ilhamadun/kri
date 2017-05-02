@@ -402,7 +402,7 @@ class Supporter(models.Model):
     @staticmethod
     def order(form, user):
         """Order tickets for user from SupporterForm
-        
+
         Args:
             - form: instance of SupporterForm
             - user: order's user
@@ -421,6 +421,15 @@ class Supporter(models.Model):
             return ticket
         else:
             return None
+
+    @staticmethod
+    def verify(ticket_id):
+        """Verifiy ticket order"""
+        ticket = Supporter.objects.get(pk=ticket_id)
+        now = timezone.now()
+        ticket.verification_time = now
+        ticket.verified_time = now
+        ticket.save()
 
     @staticmethod
     def price_due(user):

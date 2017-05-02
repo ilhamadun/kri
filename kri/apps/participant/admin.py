@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.core import urlresolvers
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
-from .models import University, Manager, Team, Person
+from .models import University, Manager, Team, Person, Supporter
 
 @admin.register(University)
 class UniversityAdmin(admin.ModelAdmin):
@@ -122,3 +122,38 @@ class PersonAdmin(admin.ModelAdmin):
 
     university.admin_order_field = 'team__university__name'
 
+
+@admin.register(Supporter)
+class SupporterAdmin(admin.ModelAdmin):
+    list_display = ('university', 'amount', 'price', 'is_active', 'order_time',
+                    'verification_button')
+    search_fields = ('user__university__name', 'user__university__abbreviation')
+
+    def university(self, obj):
+        """Return university name"""
+        return obj.user.university.name
+
+    def is_active(self, obj):
+        """Return whether ticket order is active or not"""
+        return not obj.is_obselete()
+
+    is_active.short_description = 'Active'
+    is_active.boolean = True
+
+    def verification_button(self, obj):
+        """Returns a unique verification link for each ticket"""
+        if obj.verified_time is not None:
+            return obj.verified_time
+
+        if not obj.is_obselete():
+            verify_link = urlresolvers.reverse('participant:verify-supporter', args=[obj.id])
+            next_link = urlresolvers.reverse('admin:participant_supporter_changelist')
+
+            button = '<a href="{0}?next={1}" class="link">Verifikasi</a>'.format(verify_link,
+                                                                                 next_link)
+
+            return mark_safe(button)
+        else:
+            return '-'
+
+    verification_button.short_description = 'Verify'
