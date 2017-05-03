@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'kri.apps.kri',
     'kri.apps.participant',
+    'kri.apps.attendance',
     "compressor",
 ]
 
