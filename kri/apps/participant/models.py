@@ -172,7 +172,8 @@ class Team(models.Model):
         ('krai', 'KRAI'),
         ('krsbi_beroda', 'KRSBI Beroda'),
         ('krsti', 'KRSTI'),
-        ('krpai', 'KRPAI')
+        ('krpai', 'KRPAI'),
+        ('pers', 'PERS')
     )
 
     MAX_CORE_MEMBER = {'krai': 3, 'krsbi_beroda': 4, 'krsti': 3, 'krpai': 2}
@@ -285,7 +286,8 @@ class Person(models.Model):
         ('core_member', 'Tim Inti'),
         ('mechanics', 'Mekanik'),
         ('adviser', 'Dosen Pembimbing'),
-        ('supporter', 'Supporter')
+        ('supporter', 'Supporter'),
+        ('pers', 'PERS')
     )
 
     GENDER = (
@@ -341,7 +343,7 @@ class Supporter(models.Model):
 
     def is_obselete(self):
         """Check if an order is obselete
-        
+
         Every order is obselete in 24 hours.
         """
         delta = timezone.now() - self.order_time
