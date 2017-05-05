@@ -10,9 +10,12 @@ class AutoFill:
         self.font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 24)
         self.draw = ImageDraw.Draw(self.img)
 
-    def add_text_center(self, text, y_pos):
+    def set_font(self, font, size):
+        self.font = ImageFont.truetype(font, size)
+
+    def add_text_center(self, text, y_pos, color='#FFA726'):
         width, _ = self.draw.textsize(text, font=self.font)
-        self.draw.text(((self.WIDTH - width) / 2, y_pos), text, '#FFA726', font=self.font)
+        self.draw.text(((self.WIDTH - width) / 2, y_pos), text, color, font=self.font)
 
     def show(self):
         """Display image"""
@@ -21,6 +24,7 @@ class AutoFill:
     def save(self, output_path):
         """Save image"""
         self.img.save(output_path)
+
 
 class TeamIDCard(AutoFill):
     WIDTH, HEIGHT = (638, 1011)
@@ -75,6 +79,27 @@ class TeamIDCard(AutoFill):
             card.add_name(p.name)
             card.add_team(p.team.name, p.team.get_division_display(), p.get_type_display())
             card.add_university(p.team.university.name)
-            output_path = os.path.join(output_path, p.team.university.abbreviation + '-' +
-                                       p.team.division + '-' + str(p.id) + '.png')
-            card.save(output_path)
+            out = os.path.join(output_path, p.team.university.abbreviation + '-' +
+                               p.team.division + '-' + str(p.id) + '.png')
+            card.save(out)
+
+
+class PersIDCard(AutoFill):
+    WIDTH, HEIGHT = (638, 1011)
+
+    def __init__(self, base_image):
+        super(PersIDCard, self).__init__(base_image)
+        self.set_font('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 36)
+
+    def add_agency(self, name):
+        """Add agency name to canvas"""
+        self.add_text_center(name, 485, '#222222')
+
+    @staticmethod
+    def fill(base_image, persons, output_path):
+        """Fill pers ID card"""
+        for p in persons:
+            card = PersIDCard(base_image)
+            card.add_agency(p.team.university.abbreviation)
+            out = os.path.join(output_path, 'PERS-' + p.team.university.abbreviation + '.png')
+            card.save(out)
