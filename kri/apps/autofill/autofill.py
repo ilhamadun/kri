@@ -1,4 +1,6 @@
+import os
 from PIL import Image, ImageDraw, ImageFont
+from kri.apps.participant.models import Person
 
 
 class AutoFill:
@@ -53,13 +55,26 @@ class IDCardAutoFill(AutoFill):
         """Add participant name to canvas"""
         self.add_text_center(name.title(), 460)
 
-    def add_team(self, name, category):
+    def add_team(self, name, category, role):
         """Add team name and category to canvas"""
         name = name.title()
         team = name + ' (' + category + ')'
         self.add_text_center(team, 560)
+        self.add_text_center(role, 590)
 
     def add_university(self, name):
         """Add university name to canvas"""
         name = name.title()
-        self.add_text_center(name.title(), 658)
+        self.add_text_center(name.title(), 682)
+
+def fill_id_cards(output_path):
+    persons = Person.objects.all()
+    for p in persons:
+        card = IDCardAutoFill('canvas.png')
+        card.add_photo(p.photo.path)
+        card.add_name(p.name)
+        card.add_team(p.team.name, p.team.get_division_display(), p.get_type_display())
+        card.add_university(p.team.university.name)
+        output_path = os.path.join(output_path, p.team.university.abbreviation + '-' +
+                                   p.team.division + '-' + str(p.id) + '.png')
+        card.save(output_path)
