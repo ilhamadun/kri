@@ -1,6 +1,5 @@
 import os
 from PIL import Image, ImageDraw, ImageFont
-from kri.apps.participant.models import Person
 
 
 class AutoFill:
@@ -23,7 +22,7 @@ class AutoFill:
         """Save image"""
         self.img.save(output_path)
 
-class IDCardAutoFill(AutoFill):
+class TeamIDCard(AutoFill):
     WIDTH, HEIGHT = (638, 1011)
 
     def add_photo(self, image_path):
@@ -67,14 +66,15 @@ class IDCardAutoFill(AutoFill):
         name = name.title()
         self.add_text_center(name.title(), 682)
 
-def fill_id_cards(output_path):
-    persons = Person.objects.all()
-    for p in persons:
-        card = IDCardAutoFill('canvas.png')
-        card.add_photo(p.photo.path)
-        card.add_name(p.name)
-        card.add_team(p.team.name, p.team.get_division_display(), p.get_type_display())
-        card.add_university(p.team.university.name)
-        output_path = os.path.join(output_path, p.team.university.abbreviation + '-' +
-                                   p.team.division + '-' + str(p.id) + '.png')
-        card.save(output_path)
+    @staticmethod
+    def fill(base_image, persons, output_path):
+        """Fill team members ID card"""
+        for p in persons:
+            card = TeamIDCard(base_image)
+            card.add_photo(p.photo.path)
+            card.add_name(p.name)
+            card.add_team(p.team.name, p.team.get_division_display(), p.get_type_display())
+            card.add_university(p.team.university.name)
+            output_path = os.path.join(output_path, p.team.university.abbreviation + '-' +
+                                       p.team.division + '-' + str(p.id) + '.png')
+            card.save(output_path)
