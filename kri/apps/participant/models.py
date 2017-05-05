@@ -213,6 +213,10 @@ class Team(models.Model):
         """Returns list of the team's adviser"""
         return self.persons.filter(type='adviser')
 
+    def pers(self):
+        """Returns list of the team's pers"""
+        return self.persons.filter(type='pers')
+
     def available_slot(self, person_type):
         """Get available slot for a person type"""
         return getattr(self, 'max_' + person_type)() - getattr(self, person_type)().count()
