@@ -36,8 +36,11 @@ class University(models.Model):
             - AssertionError: division is not a member of TEAM_DIVISION
 
         """
-        assert division in ('krai', 'krsbi_beroda', 'krsti', 'krpai'), (
+        assert division in ('krai', 'krsbi_beroda', 'krsti', 'krpai', 'pers'), (
             'division is not a member of TEAM_DIVISION.')
+
+        if division == 'pers':
+            return True
 
         return bool(getattr(self, division))
 
