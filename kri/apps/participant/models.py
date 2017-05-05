@@ -181,6 +181,7 @@ class Team(models.Model):
 
     MAX_CORE_MEMBER = {'krai': 3, 'krsbi_beroda': 4, 'krsti': 3, 'krpai': 2}
     MAX_MECHANIC = {'krai': 3, 'krsbi_beroda': 1, 'krsti': 1, 'krpai': 1}
+    MAX_PERS = {'krai': 0, 'krsbi_beroda': 0, 'krsti': 0, 'krpai': 0, 'pers': 1}
 
     name = models.CharField(max_length=100, null=True)
     university = models.ForeignKey(University, on_delete=models.CASCADE, related_name='teams')
@@ -200,6 +201,10 @@ class Team(models.Model):
     def max_adviser(self):
         """Returns the maximum adviser allowed for the team"""
         return 1
+
+    def max_pers(self):
+        """Returns the maximum pers allowed for the team"""
+        return self.MAX_PERS[self.division]
 
     def core_member(self):
         """Returns list of the team's core member"""
