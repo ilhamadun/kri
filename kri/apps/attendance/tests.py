@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from kri.apps.participant.tests import TeamTestCase, PersonTestCase
 from .models import Card, CardLog
@@ -91,3 +91,112 @@ class CardLogTestCase(TestCase):
         log = CardLog.login(self.card.key, self.admin)
 
         self.assertEqual(CardLog.last_by_admin(self.admin).time, log.time)
+
+    def test_request_login(self):
+        """Requests a normal login"""
+        client = Client()
+        response = client.post('/attendance/login/', {
+            'card_key': self.card.key,
+            'username': self.admin.username,
+            'password': 'password',
+        })
+
+        # self.assertEqual(response.status_code, 200)
+        json = response.json()
+        self.assertEqual(json['activity'], 'login')
+        self.assertEqual(json['message'], 'Login success.')
+        self.assertEqual(json['status'], 'success')
+        self.assertEqual(json['person']['name'], self.card.person.name)
+
+    def test_request_login_invalid_key(self):
+        """Requests login with invalid key"""
+        client = Client()
+        response = client.post('/attendance/login/', {
+            'card_key': 'invalidkey',
+            'username': self.admin.username,
+            'password': 'password',
+        })
+
+        # self.assertEqual(response.status_code, 200)
+        json = response.json()
+        self.assertEqual(json['activity'], 'login')
+        self.assertEqual(json['message'], 'Card not recognized.')
+        self.assertEqual(json['status'], 'failed')
+
+    def test_request_duplicate_login(self):
+        """Requests a duplicate login"""
+        client = Client()
+        response = client.post('/attendance/login/', {
+            'card_key': self.card.key,
+            'username': self.admin.username,
+            'password': 'password',
+        })
+
+        response = client.post('/attendance/login/', {
+            'card_key': self.card.key,
+            'username': self.admin.username,
+            'password': 'password',
+        })
+
+        # self.assertEqual(response.status_code, 200)
+        json = response.json()
+        self.assertEqual(json['activity'], 'login')
+        self.assertEqual(json['message'], 'Login rejected.')
+        self.assertEqual(json['status'], 'failed')
+
+    def test_request_logout(self):
+        """Requests a normal logout"""
+        client = Client()
+        response = client.post('/attendance/login/', {
+            'card_key': self.card.key,
+            'username': self.admin.username,
+            'password': 'password',
+        })
+        response = client.post('/attendance/logout/', {
+            'card_key': self.card.key,
+            'username': self.admin.username,
+            'password': 'password',
+        })
+
+        # self.assertEqual(response.status_code, 200)
+        json = response.json()
+        self.assertEqual(json['activity'], 'logout')
+        self.assertEqual(json['message'], 'Logout success.')
+        self.assertEqual(json['status'], 'success')
+        self.assertEqual(json['person']['name'], self.card.person.name)
+
+    def test_request_logout_invalid_key(self):
+        """Requests logout with invalid key"""
+        client = Client()
+        response = client.post('/attendance/logout/', {
+            'card_key': 'invalidkey',
+            'username': self.admin.username,
+            'password': 'password',
+        })
+
+        # self.assertEqual(response.status_code, 200)
+        json = response.json()
+        self.assertEqual(json['activity'], 'logout')
+        self.assertEqual(json['message'], 'Card not recognized.')
+        self.assertEqual(json['status'], 'failed')
+
+    def test_request_duplicate_logout(self):
+        """Requests a duplicate logout"""
+        client = Client()
+        response = client.post('/attendance/logout/', {
+            'card_key': self.card.key,
+            'username': self.admin.username,
+            'password': 'password',
+        })
+
+        response = client.post('/attendance/logout/', {
+            'card_key': self.card.key,
+            'username': self.admin.username,
+            'password': 'password',
+        })
+
+        # self.assertEqual(response.status_code, 200)
+        json = response.json()
+        self.assertEqual(json['activity'], 'logout')
+        self.assertEqual(json['message'], 'Logout rejected.')
+        self.assertEqual(json['status'], 'failed')

@@ -20,6 +20,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^', include('kri.apps.kri.urls')),
+    url(r'^attendance/', include('kri.apps.attendance.urls')),
     url(r'^peserta/', include('kri.apps.participant.urls')),
     url(r'^ksk/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
