@@ -60,6 +60,7 @@ target/
 *.sqlite3
 /assets
 /media
+.vscode
 
 # Prerequisites
 *.d
@@ -93,3 +94,4 @@ target/
 *.exe
 *.out
 *.app
+reader

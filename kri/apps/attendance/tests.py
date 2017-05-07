@@ -60,21 +60,21 @@ class CardLogTestCase(TestCase):
         """Test normal login"""
         log = CardLog.login(self.card.key, self.admin)
 
-        self.assertEqual(log.activity, 'login')
+        self.assertEqual(log.activity, 'login_granted')
 
     def test_duplicate_login(self):
         """Test login when the Card is inside"""
         CardLog.login(self.card.key, self.admin)
         log = CardLog.login(self.card.key, self.admin)
 
-        self.assertEqual(log, None)
+        self.assertEqual(log.activity, 'login_denied')
 
     def test_logout(self):
         """Test normal logout"""
         CardLog.login(self.card.key, self.admin)
         log = CardLog.logout(self.card.key, self.admin)
 
-        self.assertEqual(log.activity, 'logout')
+        self.assertEqual(log.activity, 'logout_granted')
 
     def test_duplicate_logout(self):
         """Test logout when the Card is outside"""
@@ -82,7 +82,7 @@ class CardLogTestCase(TestCase):
         CardLog.logout(self.card.key, self.admin)
         log = CardLog.logout(self.card.key, self.admin)
 
-        self.assertEqual(log, None)
+        self.assertEqual(log.activity, 'logout_denied')
 
     def test_last_by_admin(self):
         """Test last_by_admin to get the latest CardLog by an admin"""
@@ -104,7 +104,7 @@ class CardLogTestCase(TestCase):
         # self.assertEqual(response.status_code, 200)
         json = response.json()
         self.assertEqual(json['activity'], 'login')
-        self.assertEqual(json['message'], 'Login success.')
+        self.assertEqual(json['message'], 'Login granted.')
         self.assertEqual(json['status'], 'success')
         self.assertEqual(json['person']['name'], self.card.person.name)
 
@@ -141,8 +141,8 @@ class CardLogTestCase(TestCase):
         # self.assertEqual(response.status_code, 200)
         json = response.json()
         self.assertEqual(json['activity'], 'login')
-        self.assertEqual(json['message'], 'Login rejected.')
-        self.assertEqual(json['status'], 'failed')
+        self.assertEqual(json['message'], 'Login denied.')
+        self.assertEqual(json['status'], 'denied')
 
     def test_request_logout(self):
         """Requests a normal logout"""
@@ -161,7 +161,7 @@ class CardLogTestCase(TestCase):
         # self.assertEqual(response.status_code, 200)
         json = response.json()
         self.assertEqual(json['activity'], 'logout')
-        self.assertEqual(json['message'], 'Logout success.')
+        self.assertEqual(json['message'], 'Logout granted.')
         self.assertEqual(json['status'], 'success')
         self.assertEqual(json['person']['name'], self.card.person.name)
 
@@ -198,5 +198,5 @@ class CardLogTestCase(TestCase):
         # self.assertEqual(response.status_code, 200)
         json = response.json()
         self.assertEqual(json['activity'], 'logout')
-        self.assertEqual(json['message'], 'Logout rejected.')
-        self.assertEqual(json['status'], 'failed')
+        self.assertEqual(json['message'], 'Logout denied.')
+        self.assertEqual(json['status'], 'denied')

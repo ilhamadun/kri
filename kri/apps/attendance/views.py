@@ -13,11 +13,11 @@ def logger(request, activity):
         try:
             cardlog = CardLog.create_log(card_key, activity, user)
 
-            if cardlog:
+            if cardlog.activity == (activity + '_granted'):
                 return JsonResponse({
                     'activity': activity,
                     'status': 'success',
-                    'message': activity.capitalize() + ' success.',
+                    'message': activity.capitalize() + ' granted.',
                     'person': {
                         'name': cardlog.card.person.name,
                         'gender': cardlog.card.person.gender,
@@ -26,6 +26,12 @@ def logger(request, activity):
                         'role': cardlog.card.person.type,
                         'university': cardlog.card.person.team.university.name
                     }
+                })
+            elif cardlog.activity == (activity + '_denied'):
+                return JsonResponse({
+                    'activity': activity,
+                    'status': 'denied',
+                    'message': activity.capitalize() + ' denied.'
                 })
             else:
                 return JsonResponse({

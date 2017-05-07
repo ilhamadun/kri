@@ -71,13 +71,15 @@ class Card(models.Model):
 
 class CardLog(models.Model):
     ACTIVITY = (
-        ('login', 'Log In'),
-        ('logout', 'Log Out')
+        ('login_granted', 'Log In Granted'),
+        ('login_denied', 'Log In Denied'),
+        ('logout_granted', 'Log Out Granted'),
+        ('logout_denied', 'Log Out Denied')
     )
 
     card = models.ForeignKey(Card, on_delete=models.CASCADE)
     admin = models.ForeignKey(User, on_delete=models.CASCADE)
-    activity = models.CharField(max_length=6, choices=ACTIVITY)
+    activity = models.CharField(max_length=15, choices=ACTIVITY)
     time = models.DateTimeField(auto_now_add=True)
 
     @staticmethod
@@ -119,7 +121,11 @@ class CardLog(models.Model):
             raise
         else:
             if getattr(card, activity)():
-                return CardLog.objects.create(card=card, admin=admin, activity=activity)
+                log_activity = activity + '_granted'
+            else:
+                log_activity = activity + '_denied'
+
+            return CardLog.objects.create(card=card, admin=admin, activity=log_activity)
 
         return None
 
