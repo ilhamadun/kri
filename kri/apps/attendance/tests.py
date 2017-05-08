@@ -1,7 +1,9 @@
-from django.test import TestCase, Client
+import json
+from django.test import TestCase, Client, RequestFactory
 from django.contrib.auth.models import User
 from kri.apps.participant.tests import TeamTestCase, PersonTestCase
 from .models import Card, CardLog
+from .views import fetch_log
 
 class CardTestCase(TestCase):
     def setUp(self):
@@ -200,3 +202,41 @@ class CardLogTestCase(TestCase):
         self.assertEqual(json['activity'], 'logout')
         self.assertEqual(json['message'], 'Logout denied.')
         self.assertEqual(json['status'], 'denied')
+
+    def test_request_log(self):
+        client = Client()
+        login_response = client.post('/attendance/login/', {
+            'card_key': self.card.key,
+            'username': self.admin.username,
+            'password': 'password',
+        })
+
+        factory = RequestFactory()
+        request = factory.get('/attendance/fetch-log')
+        request.user = self.admin
+        response = fetch_log(request)
+
+        data = json.loads((response.content).decode('utf-8'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['status'], 'login_granted')
+        self.assertEqual(data['person']['name'], self.card.person.name)
+
+        login_response = client.post('/attendance/login/', {
+            'card_key': self.card.key,
+            'username': self.admin.username,
+            'password': 'password',
+        })
+
+        response = fetch_log(request)
+        data = json.loads((response.content).decode('utf-8'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['status'], 'login_denied')
+
+    def test_request_log_no_content(self):
+        factory = RequestFactory()
+        request = factory.get('/attendance/fetch-log')
+        request.user = self.admin
+        response = fetch_log(request)
+
+        self.assertEqual(response.status_code, 204)

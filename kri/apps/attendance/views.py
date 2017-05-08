@@ -1,5 +1,6 @@
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 from .models import Card, CardLog
 
 
@@ -65,3 +66,28 @@ def login(request):
 
 def logout(request):
     return logger(request, 'logout')
+
+
+@login_required
+def fetch_log(request):
+    log = CardLog.last_by_admin(request.user)
+
+    if log is not None:
+        try:
+            photo = log.card.person.photo.url
+        except ValueError:
+            photo = None
+
+        return JsonResponse({
+            'status': log.activity,
+            'time': log.time,
+            'person': {
+                'name': log.card.person.name,
+                'team': log.card.person.team.name,
+                'division': log.card.person.team.get_division_display(),
+                'university': log.card.person.team.university.name,
+                'photo': photo,
+            }
+        })
+
+    return HttpResponse(status=204)
