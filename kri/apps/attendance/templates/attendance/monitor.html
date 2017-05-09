@@ -1,0 +1,203 @@
+<!doctype html>
+{% load staticfiles compress %}
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<title>{% block title %}Kontes Robot Indonesia Regional 3 2017 - UGM{% endblock %}</title>
+
+	<meta name="description" content="Kontes Robot Indonesia Regional 3 2017 Universitas Gadjah Mada">
+	<meta name="keywords" content="kri, ugm">
+	<meta name="author" content="Universitas Gadjah Mada">
+
+	<link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
+	<link rel="icon" type="image/png" href="{% static 'img/favicon-32x32.png' %}" sizes="32x32">
+	<link rel="icon" type="image/png" href="{% static 'img/favicon-16x16.png' %}" sizes="16x16">
+	<link rel="manifest" href="{% static 'img/manifest.json' %}">
+	<link rel="mask-icon" href="{% static 'img/safari-pinned-tab.svg' %}" color="#f2951b">
+	<link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+	<meta name="msapplication-config" content="{% static 'img/browserconfig.xml' %}">
+	<meta name="theme-color" content="#ffffff">
+
+	{% compress css %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/vendor/bootstrap.min.css' %}" />
+	{% endcompress %}
+
+	{% compress css %}
+	{% block page-style %}
+    <style>
+        .wrapper {
+            margin-top: 80px;
+        }
+        .person-info {
+            font-size: 1.5em;
+        }
+        #permission-box {
+            margin-top: 50px;
+        }
+        #photo {
+            max-width: 450px;
+            max-height: 388px;
+        }
+    </style>
+	{% endblock page-style %}
+	{% endcompress %}
+
+	<!--[if lt IE 9]>
+		<script src="{% static 'js/html5shiv.js' %}"></script>
+		<script src="{% static 'js/respond.min.js' %}"></script>
+	<![endif]-->
+
+	{% compress css inline %}
+	{% block inline-style %}
+	{% endblock %}
+	{% endcompress %}
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-97006642-1', 'auto');
+	ga('send', 'pageview');
+	</script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 50px;">
+                <img src="{% static 'img/logo@2x.png' %}" height="70;">
+            </div>
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <img id="photo" src="{% static 'img/blank-avatar.png' %}" class="">
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form id="logger-form" action="" method="POST" style="margin-bottom: 50px; text-align: center;">
+                                {% csrf_token %}
+                                <input type="text" name="card_key" class="form-control input-lg" autofocus autocomplete="off" style="text-align: center; margin-bottom: 10px;">
+                                <label class="radio-inline">
+                                    <input type="radio" name="mode" value="login" checked>
+                                    Login
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="mode" value="logout">
+                                    Logout
+                                </label>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="person-info">
+                        <div class="row">
+                            <div class="col-sm-4">Nama</div>
+                            <div id="name" class="col-sm-8">: -</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">Tim</div>
+                            <div id="team" class="col-sm-8">: -</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">Divisi</div>
+                            <div id="division" class="col-sm-8">: -</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">Perguruan Tinggi</div>
+                            <div id="university" class="col-sm-8">: -</div>
+                        </div>
+                    </div>
+                    <div id="permission-box" class="alert alert-success text-center">
+                        <h1 id="permission-text" style="margin: 0;">-</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+    <script>
+        function handleForm() {
+            $('#logger-form').on('submit', function(event) {
+                event.preventDefault();
+                var action = $('input[name="mode"]:checked').val();
+                action = '/attendance/' + action + '/';
+
+                $.post(action, $('#logger-form').serialize(), function(data) {
+                    console.log(data.status + ': ' + data.message);
+                    if (data.status == 'success' || data.status == 'denied') {
+                        if (data.person.photo) {
+                            $('#photo').attr('src', data.person.photo)
+                        } else {
+                            $('#photo').attr('src', "{% static 'img/blank-avatar.png' %}")
+                        }
+                        
+                        $('#name').html(': ' + data.person.name)
+                        $('#team').html(': ' + data.person.team)
+                        $('#division').html(': ' + data.person.division)
+                        $('#university').html(': ' + data.person.university)
+
+                        setPermissionBox(data.status)
+                        if (data.activity == 'login' && data.status == 'success') {
+                            $('#permission-text').html('LOGIN GRANTED')
+                        } else if (data.activity == 'login' && data.status == 'denied') {
+                            $('#permission-text').html('LOGIN DENIED')
+                        } else if (data.activity == 'logout' && data.status == 'success') {
+                            $('#permission-text').html('LOGOUT GRANTED')
+                        } else if (data.activity == 'logout' && data.status == 'denied') {
+                            $('#permission-text').html('LOGOUT DENIED')
+                        }
+                    } else {
+                        $('#name').html(': -')
+                        $('#team').html(': -')
+                        $('#division').html(': -')
+                        $('#university').html(': -')
+                        $('#permission-text').html('-')
+                        $('#photo').attr('src', "{% static 'img/blank-avatar.png' %}")
+                    }
+
+                    $('input[name="card_key"]').val('');
+                }, 'json');
+            })
+        }
+
+        function setPermissionBox(status) {
+            if (status === 'success') {
+                $('#permission-box').removeClass('alert-danger');
+                $('#permission-box').addClass('alert-success');
+            } else {
+                $('#permission-box').removeClass('alert-success');
+                $('#permission-box').addClass('alert-danger');
+            }
+        }
+
+        {% comment %}
+        function poll() {
+            $.getJSON('/attendance/fetch-log/', function(data, status) {
+                if (status != 'nocontent') {
+                    $('#name').html(data.person.name)
+                    $('#team').html(data.person.team)
+                    $('#division').html(data.person.division)
+                    $('#university').html(data.person.university)
+
+                    setPermissionBox(data.status)
+                    if (data.status == 'login_granted') {
+                        $('#permission-text').html('LOGIN GRANTED')
+                    } else if (data.status == 'login_denied') {
+                        $('#permission-text').html('LOGIN DENIED')
+                    } else if (data.status == 'logout_granted') {
+                        $('#permission-text').html('LOGOUT GRANTED')
+                    } else if (data.status == 'logout_granted') {
+                        $('#permission-text').html('LOGOUT GRANTED')
+                    }
+                }
+            })
+            setTimeout(poll, 1000);
+        }
+        {% endcomment %}
+        handleForm();
+    </script>
+</body>
+</html>

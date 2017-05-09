@@ -1,18 +1,20 @@
 from django.http import HttpResponse, JsonResponse, Http404
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 from .models import Card, CardLog
 
 
 def logger(request, activity):
-    username = request.POST['username']
-    password = request.POST['password']
-    card_key = request.POST['card_key']
-    user = authenticate(username=username, password=password)
-
-    if user is not None:
+    if request.user.is_staff:
+        card_key = request.POST['card_key']
         try:
-            cardlog = CardLog.create_log(card_key, activity, user)
+            cardlog = CardLog.create_log(card_key, activity, request.user)
+
+            try:
+                photo = cardlog.card.person.photo.url
+            except ValueError:
+                photo = None
 
             if cardlog.activity == (activity + '_granted'):
                 return JsonResponse({
@@ -25,14 +27,24 @@ def logger(request, activity):
                         'team': cardlog.card.person.team.name,
                         'division': cardlog.card.person.get_type_display(),
                         'role': cardlog.card.person.type,
-                        'university': cardlog.card.person.team.university.name
+                        'university': cardlog.card.person.team.university.name,
+                        'photo': photo
                     }
                 })
             elif cardlog.activity == (activity + '_denied'):
                 return JsonResponse({
                     'activity': activity,
                     'status': 'denied',
-                    'message': activity.capitalize() + ' denied.'
+                    'message': activity.capitalize() + ' denied.',
+                    'person': {
+                        'name': cardlog.card.person.name,
+                        'gender': cardlog.card.person.gender,
+                        'team': cardlog.card.person.team.name,
+                        'division': cardlog.card.person.team.get_division_display(),
+                        'role': cardlog.card.person.type,
+                        'university': cardlog.card.person.team.university.name,
+                        'photo': photo
+                    }
                 })
             else:
                 return JsonResponse({
@@ -91,3 +103,8 @@ def fetch_log(request):
         })
 
     return HttpResponse(status=204)
+
+
+@login_required
+def monitor(request):
+    return render(request, 'attendance/monitor.html')

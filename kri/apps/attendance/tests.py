@@ -3,7 +3,7 @@ from django.test import TestCase, Client, RequestFactory
 from django.contrib.auth.models import User
 from kri.apps.participant.tests import TeamTestCase, PersonTestCase
 from .models import Card, CardLog
-from .views import fetch_log
+from .views import fetch_log, login, logout
 
 class CardTestCase(TestCase):
     def setUp(self):
@@ -96,142 +96,128 @@ class CardLogTestCase(TestCase):
 
     def test_request_login(self):
         """Requests a normal login"""
-        client = Client()
-        response = client.post('/attendance/login/', {
+        factory = RequestFactory()
+        request = factory.post('/attendance/login/', {
             'card_key': self.card.key,
-            'username': self.admin.username,
-            'password': 'password',
         })
+        request.user = self.admin
+        response = login(request)
 
-        # self.assertEqual(response.status_code, 200)
-        json = response.json()
-        self.assertEqual(json['activity'], 'login')
-        self.assertEqual(json['message'], 'Login granted.')
-        self.assertEqual(json['status'], 'success')
-        self.assertEqual(json['person']['name'], self.card.person.name)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads((response.content).decode('utf-8'))
+        self.assertEqual(data['activity'], 'login')
+        self.assertEqual(data['message'], 'Login granted.')
+        self.assertEqual(data['status'], 'success')
+        self.assertEqual(data['person']['name'], self.card.person.name)
 
     def test_request_login_invalid_key(self):
         """Requests login with invalid key"""
-        client = Client()
-        response = client.post('/attendance/login/', {
+        factory = RequestFactory()
+        request = factory.post('/attendance/login/', {
             'card_key': 'invalidkey',
-            'username': self.admin.username,
-            'password': 'password',
         })
+        request.user = self.admin
+        response = login(request)
 
-        # self.assertEqual(response.status_code, 200)
-        json = response.json()
-        self.assertEqual(json['activity'], 'login')
-        self.assertEqual(json['message'], 'Card not recognized.')
-        self.assertEqual(json['status'], 'failed')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads((response.content).decode('utf-8'))
+        self.assertEqual(data['activity'], 'login')
+        self.assertEqual(data['message'], 'Card not recognized.')
+        self.assertEqual(data['status'], 'failed')
 
     def test_request_duplicate_login(self):
         """Requests a duplicate login"""
-        client = Client()
-        response = client.post('/attendance/login/', {
+        factory = RequestFactory()
+        request = factory.post('/attendance/login/', {
             'card_key': self.card.key,
-            'username': self.admin.username,
-            'password': 'password',
         })
+        request.user = self.admin
+        response = login(request)
+        response = login(request)
 
-        response = client.post('/attendance/login/', {
-            'card_key': self.card.key,
-            'username': self.admin.username,
-            'password': 'password',
-        })
-
-        # self.assertEqual(response.status_code, 200)
-        json = response.json()
-        self.assertEqual(json['activity'], 'login')
-        self.assertEqual(json['message'], 'Login denied.')
-        self.assertEqual(json['status'], 'denied')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads((response.content).decode('utf-8'))
+        self.assertEqual(data['activity'], 'login')
+        self.assertEqual(data['message'], 'Login denied.')
+        self.assertEqual(data['status'], 'denied')
 
     def test_request_logout(self):
         """Requests a normal logout"""
-        client = Client()
-        response = client.post('/attendance/login/', {
+        factory = RequestFactory()
+        request = factory.post('/attendance/logout/', {
             'card_key': self.card.key,
-            'username': self.admin.username,
-            'password': 'password',
         })
-        response = client.post('/attendance/logout/', {
-            'card_key': self.card.key,
-            'username': self.admin.username,
-            'password': 'password',
-        })
+        request.user = self.admin
+        response = login(request)
+        response = logout(request)
 
-        # self.assertEqual(response.status_code, 200)
-        json = response.json()
-        self.assertEqual(json['activity'], 'logout')
-        self.assertEqual(json['message'], 'Logout granted.')
-        self.assertEqual(json['status'], 'success')
-        self.assertEqual(json['person']['name'], self.card.person.name)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads((response.content).decode('utf-8'))
+        self.assertEqual(data['activity'], 'logout')
+        self.assertEqual(data['message'], 'Logout granted.')
+        self.assertEqual(data['status'], 'success')
+        self.assertEqual(data['person']['name'], self.card.person.name)
 
     def test_request_logout_invalid_key(self):
         """Requests logout with invalid key"""
-        client = Client()
-        response = client.post('/attendance/logout/', {
+        factory = RequestFactory()
+        request = factory.post('/attendance/logout/', {
             'card_key': 'invalidkey',
-            'username': self.admin.username,
-            'password': 'password',
         })
+        request.user = self.admin
+        response = logout(request)
 
-        # self.assertEqual(response.status_code, 200)
-        json = response.json()
-        self.assertEqual(json['activity'], 'logout')
-        self.assertEqual(json['message'], 'Card not recognized.')
-        self.assertEqual(json['status'], 'failed')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads((response.content).decode('utf-8'))
+        self.assertEqual(data['activity'], 'logout')
+        self.assertEqual(data['message'], 'Card not recognized.')
+        self.assertEqual(data['status'], 'failed')
 
     def test_request_duplicate_logout(self):
         """Requests a duplicate logout"""
-        client = Client()
-        response = client.post('/attendance/logout/', {
+        factory = RequestFactory()
+        request = factory.post('/attendance/logout/', {
             'card_key': self.card.key,
-            'username': self.admin.username,
-            'password': 'password',
         })
+        request.user = self.admin
+        response = login(request)
+        response = logout(request)
+        response = logout(request)
 
-        response = client.post('/attendance/logout/', {
-            'card_key': self.card.key,
-            'username': self.admin.username,
-            'password': 'password',
-        })
-
-        # self.assertEqual(response.status_code, 200)
-        json = response.json()
-        self.assertEqual(json['activity'], 'logout')
-        self.assertEqual(json['message'], 'Logout denied.')
-        self.assertEqual(json['status'], 'denied')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads((response.content).decode('utf-8'))
+        self.assertEqual(data['activity'], 'logout')
+        self.assertEqual(data['message'], 'Logout denied.')
+        self.assertEqual(data['status'], 'denied')
 
     def test_request_log(self):
-        client = Client()
-        login_response = client.post('/attendance/login/', {
-            'card_key': self.card.key,
-            'username': self.admin.username,
-            'password': 'password',
-        })
-
         factory = RequestFactory()
+        request = factory.post('/attendance/logout/', {
+            'card_key': self.card.key,
+        })
+        request.user = self.admin
+        response = login(request)
+
         request = factory.get('/attendance/fetch-log')
         request.user = self.admin
         response = fetch_log(request)
 
-        data = json.loads((response.content).decode('utf-8'))
         self.assertEqual(response.status_code, 200)
+        data = json.loads((response.content).decode('utf-8'))
         self.assertEqual(data['status'], 'login_granted')
         self.assertEqual(data['person']['name'], self.card.person.name)
 
-        login_response = client.post('/attendance/login/', {
+        request = factory.post('/attendance/logout/', {
             'card_key': self.card.key,
-            'username': self.admin.username,
-            'password': 'password',
         })
+        request.user = self.admin
+        login_response = login(request)
 
         response = fetch_log(request)
-        data = json.loads((response.content).decode('utf-8'))
+        data = json.loads((login_response.content).decode('utf-8'))
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(data['status'], 'login_denied')
+        self.assertEqual(login_response.status_code, 200)
+        self.assertEqual(data['status'], 'denied')
 
     def test_request_log_no_content(self):
         factory = RequestFactory()
