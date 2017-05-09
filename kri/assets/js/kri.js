@@ -1301,7 +1301,7 @@ Ventcamp = {
 }
 
 $('.navigation-item').on( 'click', function (event) {
-    if($('#navigation').hasClass('in')){
-        $('#navigation').removeClass('in');
+    if($('#navigation').hasClass('in') && !$(event.target).hasClass('dropdown-toggle')){
+        return true;
     }
 });
