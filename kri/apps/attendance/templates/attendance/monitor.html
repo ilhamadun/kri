@@ -127,6 +127,8 @@
 
                 $.post(action, $('#logger-form').serialize(), function(data) {
                     console.log(data.status + ': ' + data.message);
+                    $('input[name="card_key"]').val('');
+
                     if (data.status == 'success' || data.status == 'denied') {
                         if (data.person.photo) {
                             $('#photo').attr('src', data.person.photo)
@@ -157,8 +159,6 @@
                         $('#permission-text').html('-')
                         $('#photo').attr('src', "{% static 'img/blank-avatar.png' %}")
                     }
-
-                    $('input[name="card_key"]').val('');
                 }, 'json');
             })
         }

@@ -26,8 +26,8 @@ def logger(request, activity):
                         'name': cardlog.card.person.name,
                         'gender': cardlog.card.person.gender,
                         'team': cardlog.card.person.team.name,
-                        'division': cardlog.card.person.get_type_display(),
-                        'role': cardlog.card.person.type,
+                        'division': cardlog.card.person.get_division_display(),
+                        'role': cardlog.card.person.get_type_display(),
                         'university': cardlog.card.person.team.university.name,
                         'photo': photo
                     }
@@ -42,7 +42,7 @@ def logger(request, activity):
                         'gender': cardlog.card.person.gender,
                         'team': cardlog.card.person.team.name,
                         'division': cardlog.card.person.team.get_division_display(),
-                        'role': cardlog.card.person.type,
+                        'role': cardlog.card.person.get_type_display(),
                         'university': cardlog.card.person.team.university.name,
                         'photo': photo
                     }
