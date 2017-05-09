@@ -2,6 +2,7 @@ from django.http import HttpResponse, JsonResponse, Http404
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.core.exceptions import PermissionDenied
 from .models import Card, CardLog
 
 
@@ -105,6 +106,8 @@ def fetch_log(request):
     return HttpResponse(status=204)
 
 
-@login_required
 def monitor(request):
-    return render(request, 'attendance/monitor.html')
+    if request.user.is_staff:
+        return render(request, 'attendance/monitor.html')
+    else:
+        raise PermissionDenied
