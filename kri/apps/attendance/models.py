@@ -112,7 +112,7 @@ class CardLog(models.Model):
         """
         assert activity in ['login', 'logout']
 
-        if not admin.has_perm('attendance.add_card_log'):
+        if not admin.has_perm('attendance.add_cardlog'):
             raise PermissionDenied
 
         try:
