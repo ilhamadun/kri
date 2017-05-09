@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block inline-style %}
+{{ block.super }}
+<style>
+    h3 {
+        margin-bottom: 30px;
+    }
+    .section-information {
+        margin-bottom: 50px;
+    }
+    ul {
+        list-style: circle;
+    }
+</style>
+{% endblock inline-style %}
+
+{% block content %}
+{% include 'header.html' %}
+
+<div class="container section-information">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h3>Tata Tertib Penonton</h3>
+            <ol style="list-style: decimal;">
+                <li>Penonton/Supporter dilarang membawa senjata tajam dan narkoba.</li>
+                <li>Dilarang membawa benda yang dapat menimbulkan kebakaran/ledakan.</li>
+                <li>Penonton/Supporter WAJIB memberikan ticket untuk dapat memasuki acara ini . Ticket hanya berlaku untuk 1 orang dan tidak dapat diberikan kepada orang lain .</li>
+                <li>Penonton/Supporter dilarang melakukan kegiatan yang dapat menyebabkan kerusuhan/menghambat jalannya acara.</li>
+                <li>Penonton/supporter dilarang membawa alat perkusi (drum dll) atau alat pengeras suara yang bisa menghambat jalannya pertandingan.</li>
+                <li>Penonton/Supporter tidak boleh memasuk area Pitstop para peserta lomba.</li>
+                <li>Penonton/Supporter dilarang masuk melalui pintu masuk peserta lomba.</li>
+                <li>Penonton/Supporter dilarang memakai kaos/baju/atribut berwarna orange.</li>
+                <li>Dilarang merokok di dalam Gedung tempat Pertandingan Kontes Robot Indonesia</li>
+                <li>Dilarang membawa makanan, minuman, serta rokok ke dalam Gedung tempat Pertandingan Kontes Robot Indonesia, apabila membawa barang-barang tersebut dapat dititipkan kepada panita di pintu masuk dan akan dikembalikan setelah penonton keluar dari Gedung.</li>
+                <li>Penonton/ Supporter menjaga kebersihan dengan tida membuang sampah sembarangan</li>
+                <li>Untuk backdrop Universitas hanya boleh membawa satu backdrop dan besarnya tidak boleh melebihi ukuran yang sudah ditentukan sebagai berikut:
+                    <ul>
+                        <li>Pemasangan backdrop pada bagian depan tribun Penonton/Supporter Ukuran maksimal: 3 x 1 m</li>
+                        <li>Tidak diperkenankan memasang backdrop pada bagian belakang tribun Penonton/Supporter</li>
+                    </ul>
+                </li>
+            </ol>
+            <br>
+            <p><strong>Bagi yang melanggar peraturan-peraturan diatas akan dikenakan SANKSI dan bagi penonton yang melihat/mengetahui adanya pelanggaran harap dilaporkan kepada panitia KRI agar acara dapat berjalan dengan lancar, Terimakasih.</strong></p>
+            <br>
+            <h5>Pelanggaran Peraturan Penonton</h5>
+            <ul>
+                <li>Melakukan pelanggaran: Mendapat teguran dari panitia</li>
+                <li>Kembali melakukan pelanggaran: Dikeluarkan dari gedung pertandingan</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

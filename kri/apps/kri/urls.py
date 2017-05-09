@@ -7,4 +7,5 @@ app_name = 'kri'
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^informasi/(?P<page>[\w-]+)/$', views.informasi, name='informasi'),
 ]

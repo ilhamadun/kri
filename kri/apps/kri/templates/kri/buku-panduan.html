@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block inline-style %}
+{{ block.super }}
+<style>
+    h3 {
+        margin-bottom: 30px;
+    }
+    .section-information {
+        margin-bottom: 50px;
+    }
+</style>
+{% endblock inline-style %}
+
+{% block content %}
+{% include 'header.html' %}
+
+<div class="container section-information">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h3>Buku Panduan</h3>
+            <p style="margin-bottom: 40px;">Silahkan unduh buku panduan pada link berikut ini:</p>
+            <div class="text-center" style="margin-bottom: 100px;">
+                <a href="/media/buku-panduan-pdf" class="btn btn-info btn-lg">Unduh Buku Panduan</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
