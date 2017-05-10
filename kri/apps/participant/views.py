@@ -45,7 +45,7 @@ def login(request):
 
 @login_required
 def index(request):
-    return redirect('participant:supporter')
+    return redirect('kri:index')
 
     teams = {}
     for t in Team.TEAM_DIVISION:
@@ -236,6 +236,8 @@ def render_person_form(request, person_type):
 
 @login_required
 def supporter(request):
+    return redirect('kri:index')
+
     if request.method == 'POST':
         form = SupporterForm(request.POST)
         ticket = Supporter.order(form, request.user)
