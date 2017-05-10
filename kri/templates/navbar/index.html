@@ -17,7 +17,7 @@
             </li>
         </ul>
     </li>{% endcomment %}
-    <li class="navigation-item dropdown">
+    <li class="navigation-item dropdown hidden-sm hidden-xs">
         <a class="navigation-link dropdown-toggle" data-toggle="dropdown">Informasi</a>
         <ul class="dropdown-menu" style="max-height: 468px;">
             <li class="navigation-item">
@@ -33,6 +33,18 @@
                 <a href="{% url 'kri:informasi' 'tata-tertib-penonton' %}" class="navigation-link">Tata Tertib Penonton</a>
             </li>
         </ul>
+    </li>
+    <li class="navigation-item hidden-md hidden-lg">
+        <a href="{% url 'kri:informasi' 'buku-panduan' %}" class="navigation-link">Buku Panduan</a>
+    </li>
+    <li class="navigation-item hidden-md hidden-lg">
+        <a href="{% url 'kri:informasi' 'peraturan-peserta' %}" class="navigation-link">Peraturan Peserta</a>
+    </li>
+    <li class="navigation-item hidden-md hidden-lg">
+        <a href="{% url 'kri:informasi' 'tata-tertib-pers' %}" class="navigation-link">Aturan Pers dan Liputan Kegiatan</a>
+    </li>
+    <li class="navigation-item hidden-md hidden-lg">
+        <a href="{% url 'kri:informasi' 'tata-tertib-penonton' %}" class="navigation-link">Tata Tertib Penonton</a>
     </li>
 </ul>
 
